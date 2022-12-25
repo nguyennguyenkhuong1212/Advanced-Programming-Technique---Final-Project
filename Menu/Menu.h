@@ -56,9 +56,3 @@ class Menu{
 void hello(){
     cout << "Hello" << "\n";
 }
-
-int main(){
-    Menu menu;
-    menu.addOption(Option("Hello", "1", hello));
-    menu.run();
-}
