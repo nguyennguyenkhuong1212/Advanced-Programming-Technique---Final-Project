@@ -6,17 +6,18 @@
 #include <sstream>
 #include <cmath>
 #include <functional>
+#pragma once
 using namespace std;
 
 class Option{   
     private:
         const vector <string> fields = {"Input", "Action"};
-        string labelAction;
         string toggleKey;
+        string labelAction;
         function <void()> command;
 
     public:
-        Option(string labelAction = "", string toggleKey = "", function <void()> command = nullptr)
+        Option(string toggleKey = "", string labelAction = "", function <void()> command = nullptr)
         : labelAction(labelAction), toggleKey(toggleKey), command(command){};
     
         vector <string> getFields(){

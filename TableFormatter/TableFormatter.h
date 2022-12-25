@@ -8,6 +8,7 @@
 #include <functional>
 #include <algorithm>
 #include "../utils/Delimiter.h"
+#pragma once
 using namespace std;
 
 class TableFormatter {

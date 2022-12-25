@@ -9,6 +9,7 @@
 #include "../utils/Option.h"
 #include "../TableFormatter/TableFormatter.h"
 #include "../utils/Delimiter.h"
+#pragma once
 using namespace std;
 
 class Menu{
@@ -16,6 +17,9 @@ class Menu{
         vector<Option> options;
 
     public:
+
+        Menu(vector<Option> options = {})
+        :options(options){};
 
         void addOption(Option option){
             options.push_back(option);
@@ -52,7 +56,3 @@ class Menu{
             }
         }
 };
-
-void hello(){
-    cout << "Hello" << "\n";
-}
