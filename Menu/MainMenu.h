@@ -20,4 +20,33 @@ class MainMenu : public Menu {
             this->addOption(Option("2", "Member"));
             this->addOption(Option("3", "Admin"));
         }
+
+        void displayOptions(){
+            Option temp;
+            const vector <string> fields = {"Input", "Role"};
+            TableFormatter table = TableFormatter(fields);
+            for(Option option : options){
+                table.addRow(option.toStringArray());
+            }
+            table.display();
+        }
+
+        void run(){
+            Menu::welcome();
+            while (true) {
+                cout << "Use the app as: \n";
+                displayOptions();
+                string input = "";
+                cout << "Enter an option: ";
+                do {
+                    getline(cin, input);
+                }
+                while (input == "");
+                for (Option option : options) {
+                    if (option.getToggleKey() == input) {
+                        option.execute();
+                    }
+                }
+            }
+        }
 };

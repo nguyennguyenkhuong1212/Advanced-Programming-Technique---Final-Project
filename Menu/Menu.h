@@ -17,7 +17,6 @@ class Menu{
         vector<Option> options;
 
     public:
-
         Menu(vector<Option> options = {})
         :options(options){};
 
@@ -35,7 +34,7 @@ class Menu{
         }
 
         void welcome(){
-            cout << "\nEEET2482/COSC2082 ASSIGNMENT\nVACATION HOUSE EXCHANGE APPLICATION\n\nInstructors: Mr. Linh Tran & Phong Ngo\nGroup: \ns3924577, Nguyen Nguyen Khuong\ns3931605, Nguyen Cuong Anh Minh\ns3880115, Nguyen Chau Loan\ns3878280, Min Chi Gia Khiem\n";
+            cout << "\nEEET2482/COSC2082 ASSIGNMENT\nVACATION HOUSE EXCHANGE APPLICATION\n\nInstructors: Mr. Linh Tran & Phong Ngo\nGroup: \ns3924577, Nguyen Nguyen Khuong\ns3931605, Nguyen Cuong Anh Minh\ns3880115, Nguyen Chau Loan\ns3878280, Min Chi Gia Khiem\n\n";
         }
 
         void run(){
@@ -55,4 +54,6 @@ class Menu{
                 }
             }
         }
+
+        friend class MainMenu;
 };
