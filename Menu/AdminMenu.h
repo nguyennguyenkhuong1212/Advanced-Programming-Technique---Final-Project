@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,7 +9,6 @@
 #include <functional>
 #include <algorithm>
 #include "Menu.h"
-#pragma once
 using namespace std;
 
 class AdminMenu : public Menu{
