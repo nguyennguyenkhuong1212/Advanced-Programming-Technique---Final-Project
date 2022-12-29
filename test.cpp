@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -7,8 +8,7 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include "Menu/MainMenu.h"
-#pragma once
+#include "MainMenu.h"
 using namespace std;
 
 void hello(){
