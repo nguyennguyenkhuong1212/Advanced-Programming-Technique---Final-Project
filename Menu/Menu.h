@@ -7,9 +7,9 @@
 #include <sstream>
 #include <cmath>
 #include <functional>
-#include "Option.h"
-#include "TableFormatter.h"
-#include "Delimiter.h"
+#include "../utils/Option.h"
+#include "../TableFormatter/TableFormatter.h"
+#include "../utils/Delimiter.h"
 using namespace std;
 
 class Menu{

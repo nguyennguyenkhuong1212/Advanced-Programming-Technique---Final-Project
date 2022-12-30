@@ -12,12 +12,13 @@ using namespace std;
 
 class Review{
     private:
+        int id;
         string comment;
         int score;
 
     public: 
-        Review(string comment = "", int score = 0)
-        : comment(comment), score(score){};    
+        Review(int id = 0, string comment = "", int score = 0)
+        : id(id), comment(comment), score(score){};    
 
         void addReview(){
             cout << "Enter score: ";

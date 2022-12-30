@@ -12,6 +12,8 @@
 using namespace std;
 
 class MainMenu : public Menu {
+    private:
+        
     public:
         MainMenu(){
             this->addOption(Option("1", "Guest"));

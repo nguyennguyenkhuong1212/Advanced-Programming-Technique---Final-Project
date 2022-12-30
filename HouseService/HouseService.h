@@ -8,29 +8,30 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include "ReviewService.h"
-#include "MemberService.h"
+#include "../ReviewService/ReviewService.h"
 using namespace std;
 
 class HouseReview : public Review {
     private:
-        Member occupiedPerson;
+        int occupiedPersonId;
+        
     public:
-        HouseReview(string comment = "", int score = 0, Member occupiedPerson = Member())
-        : Review(comment, score), occupiedPerson(occupiedPerson){};
+        HouseReview(int id = 0, string comment = "", int score = 0, int occupiedPersonId = 0)
+        : Review(id, comment, score), occupiedPersonId(occupiedPersonId){};
 };
 
 class House{
     private:
+        int id;
         string location;
         string description;
         int availableTimeStart;
         int availableTimeEnd;
-        vector <HouseReview> reviews;
+        vector <int> reviewId;
     
     public:
-        House(string location = "", string description = "", int availableTimeStart = 0, int availableTimeEnd = 0)
-        : location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd){};
+        House(int id = 0, string location = "", string description = "", int availableTimeStart = 0, int availableTimeEnd = 0)
+        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd){};
         
         friend class Member;
 };
