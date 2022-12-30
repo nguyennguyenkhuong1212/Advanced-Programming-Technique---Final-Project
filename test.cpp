@@ -8,7 +8,10 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include "MainMenu.h"
+#include "Menu/MainMenu.h"
+#include "MemberService/MemberService.h"
+#include "HouseService/HouseService.h"
+#include "RepoService/RepoService.h"
 using namespace std;
 
 void hello(){
@@ -16,7 +19,17 @@ void hello(){
 }
 
 int main(){
-    MainMenu menu;
-    menu.run();
+    // MainMenu menu;
+    // menu.run();
+    Member m1(1, "khuongproha", "Hello123", "Nguyen Nguyen Khuong", "0865122487", 500, {1, 2, 3}, {1});
+    ofstream dataFile;
+    dataFile.open("RepoService/MemberList.csv", ios::out);
+    dataFile << m1.toDataLine();
+    dataFile.close();
+    RepoService repo;
+    vector<Member> memberList = repo.readMemberList();
+    for (Member member : memberList){
+        cout << member.toDataLine() << endl;
+    }
 }
 

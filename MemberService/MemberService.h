@@ -8,28 +8,49 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include "HouseService.h"
-#include "ReviewService.h"
+#include "../ReviewService/ReviewService.h"
 using namespace std;
 
 class MemberReview : public Review {
     private:
-        House occupiedHouse;
+        int occupiedHouseId;
     public:
-        MemberReview(string comment = "", int score = 0, House occupiedHouse = House())
-        : Review(comment, score), occupiedHouse(occupiedHouse){};
+        MemberReview(int id, string comment = "", int score = 0, int occupiedHouseId = 0)
+        : Review(id, comment, score), occupiedHouseId(occupiedHouseId){};
 };
 
 class Member{
     private:
+        int id;
         string username;
+        string password;
         string fullName;
         string phoneNumber;
         int creditPoint;
-        vector <House> listedHouse;
-        vector <MemberReview> reviews;
+        vector <int> listedHouseId;
+        vector <int> reviewsId;
 
     public: 
-        Member(string username = "", string fullName = "", string phoneNumber = "", int creditPoint = 0, vector <House> listedHouse = {})
-        : username(username), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouse(listedHouse){};
+        Member(int id = 0, string username = "", string password = " ", string fullName = "", string phoneNumber = "", int creditPoint = 0, vector <int> listedHouseId = {}, vector <int> reviewsId = {})
+        : id(id), username(username), password(password), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouseId(listedHouseId), reviewsId(reviewsId){};
+
+        string toDataLine(){
+            stringstream ss;
+            ss << id << ",";
+            ss << username << ",";
+            ss << password << ",";
+            ss << fullName << ",";
+            ss << phoneNumber << ",";
+            ss << creditPoint << ",";
+            for (int id: listedHouseId){
+                ss << id << " ";
+            }
+            ss << ",";
+            for (int id: reviewsId){
+                ss << id << " ";
+            }
+            return ss.str();
+        }
+
+        friend class RepoService;
 };
