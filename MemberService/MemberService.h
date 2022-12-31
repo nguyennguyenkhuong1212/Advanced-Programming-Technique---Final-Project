@@ -28,11 +28,12 @@ class Member{
         string phoneNumber;
         int creditPoint;
         vector <int> listedHouseId;
-        vector <int> reviewsId;
+        vector <int> reviewId;
+        vector <int> requestId;
 
     public: 
-        Member(int id = 0, string username = "", string password = " ", string fullName = "", string phoneNumber = "", int creditPoint = 0, vector <int> listedHouseId = {}, vector <int> reviewsId = {})
-        : id(id), username(username), password(password), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouseId(listedHouseId), reviewsId(reviewsId){};
+        Member(int id = 0, string username = "", string password = " ", string fullName = "", string phoneNumber = "", int creditPoint = 0, vector <int> listedHouseId = {}, vector <int> reviewId = {}, vector <int> requestId = {})
+        : id(id), username(username), password(password), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouseId(listedHouseId), reviewId(reviewId), requestId(requestId){};
 
         string toDataLine(){
             stringstream ss;
@@ -46,7 +47,7 @@ class Member{
                 ss << id << " ";
             }
             ss << ",";
-            for (int id: reviewsId){
+            for (int id: reviewId){
                 ss << id << " ";
             }
             return ss.str();

@@ -25,13 +25,27 @@ class House{
         int id;
         string location;
         string description;
-        int availableTimeStart;
-        int availableTimeEnd;
+        string availableTimeStart;
+        string availableTimeEnd;
         vector <int> reviewId;
+        vector <int> requestId;
     
     public:
-        House(int id = 0, string location = "", string description = "", int availableTimeStart = 0, int availableTimeEnd = 0)
-        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd){};
+        House(int id = 0, string location = "", string description = "", string availableTimeStart = 0, string availableTimeEnd = 0, vector <int> reviewId = {}, vector <int> requestId = {})
+        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd), reviewId(reviewId), requestId(requestId){};
+
+        string toDataLine(){
+            stringstream ss;
+            ss << id << ",";
+            ss << location << ",";
+            ss << description << ",";
+            ss << availableTimeStart << ",";
+            ss << availableTimeEnd << ",";
+            for (int i: reviewId){
+                ss << i << " ";
+            }
+            return ss.str();
+        }
         
         friend class Member;
 };
