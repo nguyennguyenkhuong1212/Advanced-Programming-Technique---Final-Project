@@ -31,5 +31,19 @@ int main(){
     for (Member member : memberList){
         cout << member.toDataLine() << endl;
     }
+    
+
+    House h1(1, "Ho Chi Minh City", "Big house", "31/12/2022", "01/02/2023", {1});
+    dataFile.open("RepoService/HouseList.csv", ios::out);
+    dataFile << h1.toDataLine();
+    dataFile.close();
+    vector<House> houseList = repo.readHouseList();
+    for (House house : houseList){
+        cout << house.toDataLine() << endl;
+    }
+
+    cout << ("31/12/2022" > "01/01/2023");
+    return 0;
 }
+
 
