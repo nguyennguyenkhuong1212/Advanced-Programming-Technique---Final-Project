@@ -29,5 +29,6 @@ class Request {
             ss << occupiedHouseId << ",";
             ss << timeStart << ",";
             ss << timeEnd;
+            return ss.str();
         }
 };

@@ -10,15 +10,23 @@
 #include "../utils/Option.h"
 #include "../TableFormatter/TableFormatter.h"
 #include "../utils/Delimiter.h"
+#include "../HouseService/HouseService.h"
+#include "../MemberService/MemberService.h"
+#include "../RequestService/RequestService.h"
 using namespace std;
 
 class Menu{
     private:
         vector<Option> options;
+        vector<House> houseList;
+        vector<Member> memberList;
+        vector<HouseReview> houseReviewList;
+        vector<MemberReview> memberReviewList;
+        vector<Request> requestList;
 
     public:
-        Menu(vector<Option> options = {})
-        :options(options){};
+        Menu(vector<Option> options = {}, vector<House> houseList = {}, vector<Member> memberList = {}, vector<HouseReview> houseReviewList = {}, vector<MemberReview> memberReviewList = {}, vector<Request> requestList = {})
+        :options(options), houseList(houseList), memberList(memberList), houseReviewList(houseReviewList), memberReviewList(memberReviewList), requestList(requestList){}; 
 
         void addOption(Option option){
             options.push_back(option);
@@ -47,13 +55,22 @@ class Menu{
                     getline(cin, input);
                 }
                 while (input == "");
+                bool foundOption = false;
                 for (Option option : options) {
                     if (option.getToggleKey() == input) {
                         option.execute();
+                        foundOption = true;
+                        break;
                     }
+                }
+                if (!foundOption) {
+                    cout << "Invalid option. Please enter again.\n\n";
                 }
             }
         }
 
         friend class MainMenu;
+        friend class GuestMenu;
+        friend class MemberMenu;
+        friend class AdminMenu;
 };

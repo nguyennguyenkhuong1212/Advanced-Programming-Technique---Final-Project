@@ -14,9 +14,20 @@ using namespace std;
 class MemberReview : public Review {
     private:
         int occupiedHouseId;
+        int hostId;
     public:
-        MemberReview(int id, string comment = "", int score = 0, int occupiedHouseId = 0)
-        : Review(id, comment, score), occupiedHouseId(occupiedHouseId){};
+        MemberReview(int id, string comment = "", int score = 0, int occupiedHouseId = 0, int hostId = 0)
+        : Review(id, comment, score), occupiedHouseId(occupiedHouseId),hostId(hostId){};
+
+        string toDataLine(){
+            stringstream ss;
+            ss << id << ",";
+            ss << comment << ",";
+            ss << score << ",";
+            ss << occupiedHouseId << ",";
+            ss << hostId;
+            return ss.str();
+        }
 };
 
 class Member{

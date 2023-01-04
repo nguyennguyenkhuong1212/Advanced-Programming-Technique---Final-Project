@@ -9,11 +9,13 @@
 #include <functional>
 #include <algorithm>
 #include "Menu.h"
+#include "GuestMenu.h"
+#include "MemberMenu.h"
+#include "AdminMenu.h"
+#include "../RepoService/RepoService.h"
 using namespace std;
 
 class MainMenu : public Menu {
-    private:
-        
     public:
         MainMenu(){
             this->addOption(Option("1", "Guest"));
@@ -33,6 +35,12 @@ class MainMenu : public Menu {
 
         void run(){
             Menu::welcome();
+            RepoService repo;
+            houseList = repo.readHouseList();
+            memberList = repo.readMemberList();
+            memberReviewList = repo.readMemberReviewList();
+            houseReviewList = repo.readHouseReviewList();
+            requestList = repo.readRequestList();
             while (true) {
                 cout << "Use the app as: \n";
                 displayOptions();
@@ -48,5 +56,9 @@ class MainMenu : public Menu {
                     }
                 }
             }
+        }
+
+        void useApplicationAsGuest(){
+            GuestMenu guestMenu(houseList, memberList, houseReviewList, memberReviewList, requestList);
         }
 };
