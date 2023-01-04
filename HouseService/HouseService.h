@@ -18,6 +18,15 @@ class HouseReview : public Review {
     public:
         HouseReview(int id = 0, string comment = "", int score = 0, int occupiedPersonId = 0)
         : Review(id, comment, score), occupiedPersonId(occupiedPersonId){};
+
+        string toDataLine(){
+            stringstream ss;
+            ss << id << ",";
+            ss << comment << ",";
+            ss << score << ",";
+            ss << occupiedPersonId << ",";
+            return ss.str();
+        }
 };
 
 class House{
