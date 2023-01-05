@@ -43,7 +43,7 @@ int main(){
     //     cout << house.toDataLine() << endl;
     // }
 
-    GuestMenu menu;
+    MainMenu menu;
     menu.run();
 
     return 0;

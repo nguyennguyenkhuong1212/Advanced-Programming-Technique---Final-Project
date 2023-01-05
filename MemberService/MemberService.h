@@ -15,9 +15,10 @@ class MemberReview : public Review {
     private:
         int occupiedHouseId;
         int hostId;
+        
     public:
         MemberReview(int id, string comment = "", int score = 0, int occupiedHouseId = 0, int hostId = 0)
-        : Review(id, comment, score), occupiedHouseId(occupiedHouseId),hostId(hostId){};
+        : Review(id, comment, score), occupiedHouseId(occupiedHouseId), hostId(hostId){};
 
         string toDataLine(){
             stringstream ss;
