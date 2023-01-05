@@ -7,13 +7,19 @@
 #include <sstream>
 #include <cmath>
 #include <functional>
+#include <windows.h>  
 #include "../utils/Option.h"
 #include "../TableFormatter/TableFormatter.h"
 #include "../utils/Delimiter.h"
 #include "../HouseService/HouseService.h"
 #include "../MemberService/MemberService.h"
 #include "../RequestService/RequestService.h"
+#include "../RepoService/RepoService.h"
 using namespace std;
+
+void endProgram(){
+    exit(0);
+}
 
 class Menu{
     private:
@@ -67,6 +73,17 @@ class Menu{
                     cout << "Invalid option. Please enter again.\n\n";
                 }
             }
+        }
+
+        void stop(){
+            RepoService repo;
+            cout << "Exiting...\n";
+            repo.writeMemberListIntoFile(memberList, false);
+            repo.writeHouseListIntoFile(houseList, false);
+            repo.writeMemberReviewListIntoFile(memberReviewList, false);
+            repo.writeRequestListIntoFile(requestList, false);
+            repo.writeHouseReviewListIntoFile(houseReviewList, false);
+            exit(0);
         }
 
         friend class MainMenu;

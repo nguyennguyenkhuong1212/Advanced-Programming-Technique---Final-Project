@@ -18,7 +18,7 @@ using namespace std;
 class MainMenu : public Menu {
     public:
         MainMenu(){
-            this->addOption(Option("1", "Guest"));
+            this->addOption(Option("1", "Guest", [&]() -> void{useApplicationAsGuest();}));
             this->addOption(Option("2", "Member"));
             this->addOption(Option("3", "Admin"));
         }
@@ -37,10 +37,10 @@ class MainMenu : public Menu {
             Menu::welcome();
             RepoService repo;
             houseList = repo.readHouseList();
-            memberList = repo.readMemberList();
-            memberReviewList = repo.readMemberReviewList();
-            houseReviewList = repo.readHouseReviewList();
-            requestList = repo.readRequestList();
+            // memberList = repo.readMemberList();
+            // memberReviewList = repo.readMemberReviewList();
+            // houseReviewList = repo.readHouseReviewList();
+            // requestList = repo.readRequestList();
             while (true) {
                 cout << "Use the app as: \n";
                 displayOptions();
@@ -60,5 +60,6 @@ class MainMenu : public Menu {
 
         void useApplicationAsGuest(){
             GuestMenu guestMenu(houseList, memberList, houseReviewList, memberReviewList, requestList);
+            guestMenu.run();
         }
 };

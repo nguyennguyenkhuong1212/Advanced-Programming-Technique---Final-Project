@@ -55,6 +55,15 @@ class House{
             }
             return ss.str();
         }
+
+        string toDisplayLine(string prefix){
+            stringstream ss;
+            ss << prefix << "Location: " << location << "\n";
+            ss << prefix << "Description: " << description << "\n";
+            ss << prefix << "Available Time Start: " << availableTimeStart << "\n";
+            ss << prefix << "Available Time End: " << availableTimeEnd << "\n";
+            return ss.str();
+        }
         
         friend class Member;
 };

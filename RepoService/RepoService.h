@@ -17,7 +17,7 @@ using namespace std;
 class RepoService{
     public:
         vector <Member> readMemberList(){
-            vector <Member> memberList;
+            vector <Member> memberList = {};
             ifstream inputFile;
             inputFile.open("RepoService/MemberList.csv", ios::in);
             string dataLine = "";
@@ -49,7 +49,7 @@ class RepoService{
         }
 
         vector <House> readHouseList(){
-            vector <House> houseList;
+            vector <House> houseList = {};
             ifstream inputFile;
             inputFile.open("RepoService/HouseList.csv", ios::in);
             string dataLine = "";
@@ -80,7 +80,7 @@ class RepoService{
         }
 
         vector <Request> readRequestList(){
-            vector <Request> requestList;
+            vector <Request> requestList = {};
             ifstream inputFile;
             inputFile.open("RepoService/RequestList.csv", ios::in);
             string dataLine = "";
@@ -101,7 +101,7 @@ class RepoService{
         }
 
         vector <HouseReview> readHouseReviewList(){
-            vector <HouseReview> houseReviewList;
+            vector <HouseReview> houseReviewList = {};
             ifstream inputFile;
             inputFile.open("RepoService/HouseReviewList.csv", ios::in);
             string dataLine = "";
@@ -121,7 +121,7 @@ class RepoService{
         }
 
         vector <MemberReview> readMemberReviewList(){
-            vector <MemberReview> memberReviewList;
+            vector <MemberReview> memberReviewList = {};
             ifstream inputFile;
             inputFile.open("RepoService/MemberReviewList.csv", ios::in);
             string dataLine = "";
