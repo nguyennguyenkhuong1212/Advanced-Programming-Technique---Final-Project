@@ -23,6 +23,7 @@ class RepoService{
             string dataLine = "";
             while (true){
                 getline(inputFile, dataLine);
+                if (dataLine == "") break;
                 vector<string> data = split(dataLine, ',');
                 int id = stoi(data[0]);
                 string username = data[1];
@@ -49,12 +50,13 @@ class RepoService{
         }
 
         vector <House> readHouseList(){
-            vector <House> houseList = {};
+            vector <House> houseList;
             ifstream inputFile;
             inputFile.open("RepoService/HouseList.csv", ios::in);
             string dataLine = "";
             while (true){
                 getline(inputFile, dataLine);
+                if (dataLine == "") break;
                 vector<string> data = split(dataLine, ',');
                 int id = stoi(data[0]);
                 string location = data[1];
@@ -67,7 +69,7 @@ class RepoService{
                 for (string id : temp){
                     reviewId.push_back(stoi(id));
                 }
-                temp = split(data[6],' ');
+                temp = split(data[6], ' ');
                 for (string id : temp){
                     requestId.push_back(stoi(id));
                 }
@@ -86,6 +88,7 @@ class RepoService{
             string dataLine = "";
             while (true){
                 getline(inputFile, dataLine);
+                if (dataLine == "") break;
                 vector<string> data = split(dataLine, ',');
                 int id = stoi(data[0]);
                 int occupiedPersonId = stoi(data[1]);
@@ -107,6 +110,7 @@ class RepoService{
             string dataLine = "";
             while (true){
                 getline(inputFile, dataLine);
+                if (dataLine == "") break;
                 vector<string> data = split(dataLine, ',');
                 int id = stoi(data[0]);
                 string comment = data[1];
@@ -127,6 +131,7 @@ class RepoService{
             string dataLine = "";
             while (true){
                 getline(inputFile, dataLine);
+                if (dataLine == "") break;
                 vector<string> data = split(dataLine, ',');
                 int id = stoi(data[0]);
                 string comment = data[1];
