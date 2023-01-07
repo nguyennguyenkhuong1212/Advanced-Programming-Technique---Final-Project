@@ -8,6 +8,7 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
+#include "../utils/ReadString.h"
 using namespace std;
 
 class Review{
@@ -24,7 +25,7 @@ class Review{
             cout << "Enter score: ";
             cin >> score;
             cout << "Enter comment: ";
-            cin >> comment;
+            readString(comment);
         }
 
         friend class HouseReview;
