@@ -7,7 +7,7 @@
 #include <sstream>
 #include <cmath>
 #include <functional>
-#include <windows.h>  
+#include <stdio.h> 
 #include "../utils/Option.h"
 #include "../TableFormatter/TableFormatter.h"
 #include "../utils/Delimiter.h"

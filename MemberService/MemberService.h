@@ -55,12 +55,14 @@ class Member{
             ss << fullName << ",";
             ss << phoneNumber << ",";
             ss << creditPoint << ",";
-            for (int id: listedHouseId){
-                ss << id << " ";
+            int id = 0;
+            for (int i: listedHouseId){
+                ss << i << (++id != listedHouseId.size() ? " " : "");
             }
             ss << ",";
-            for (int id: reviewId){
-                ss << id << " ";
+            id = 0;
+            for (int i: reviewId){
+                ss << i << (++id != reviewId.size() ? " " : "");
             }
             return ss.str();
         }
