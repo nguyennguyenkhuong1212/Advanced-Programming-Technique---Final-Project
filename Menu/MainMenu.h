@@ -44,7 +44,7 @@ class MainMenu : public Menu {
                 welcome();
                 cout << "Use the app as: \n";
                 displayOptions();
-                cout << "\nYour could also exit the application by enter 4!!!\n\n";
+                cout << "\nYour could also exit the application by enter 4 !!!\n\n";
                 string input = "";
                 cout << "Enter an option: ";
                 do {

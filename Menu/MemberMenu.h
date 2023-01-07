@@ -34,12 +34,12 @@ class MemberMenu : public Menu{
         }
 
         void rateOccupier(){
-            cout << "\tThis is all your listed house:\n\n";
+            cout << "\tThis is all your listed house:\n";
             viewAllHouseListed(curMember, "\t\t");
             cout << "\n\tEnter a house's ID to view all the occupiers: ";
             int houseId;
             cin >> houseId;
-            cout << "\tThis is all of people who occupied this house:\n\n";
+            cout << "\tThis is all of people who occupied this house:\n";
             for (House house: houseList){
                 if (house.id == houseId){
                     viewAllOccupiers(house, "\t\t");
@@ -56,6 +56,7 @@ class MemberMenu : public Menu{
             string comment;
             readString(comment);
             MemberReview review(memberReviewList.size(), comment, score, houseId, occupierId);
+            memberReviewList.push_back(review);
             cout << "\n";
             delay(1000);
         }

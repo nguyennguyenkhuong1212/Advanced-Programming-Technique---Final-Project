@@ -84,6 +84,7 @@ class Member{
 
         string toDisplayLine(string prefix = ""){
             stringstream ss;
+            ss << "\n";
             ss << prefix << "ID: " << id << "\n";
             ss << prefix << "Name: " << fullName << "\n";
             return ss.str();
