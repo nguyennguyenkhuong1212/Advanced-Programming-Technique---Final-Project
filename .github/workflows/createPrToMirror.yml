@@ -1,4 +1,4 @@
-name: Create pull request to mirror for Frontend team
+name: Create pull request to mirror's branch
 run-name: ${{ github.actor }} is creating PR to mirror's branch
 on:
   push:
