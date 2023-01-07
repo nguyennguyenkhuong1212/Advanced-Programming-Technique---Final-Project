@@ -11,6 +11,7 @@
 using namespace std;
 
 vector<string> split(string st, char sep) {
+    if (st == "") return {};
     vector<string> res = {};
     string temp = "";
     for(int i = 0; i < st.length(); i++){
@@ -22,7 +23,7 @@ vector<string> split(string st, char sep) {
             temp = "";
         }
     }
-    if (temp != "") {
+    if (temp != "" || st[st.size() - 1] == sep) {
         res.push_back(temp);
     }
     return res;

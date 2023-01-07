@@ -36,8 +36,8 @@ class MainMenu : public Menu {
         void run(){
             Menu::welcome();
             RepoService repo;
-            // houseList = repo.readHouseList();
-            // memberList = repo.readMemberList();
+            houseList = repo.readHouseList();
+            memberList = repo.readMemberList();
             // memberReviewList = repo.readMemberReviewList();
             // houseReviewList = repo.readHouseReviewList();
             // requestList = repo.readRequestList();

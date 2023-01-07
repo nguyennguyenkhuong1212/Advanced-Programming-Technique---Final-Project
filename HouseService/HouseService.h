@@ -50,8 +50,14 @@ class House{
             ss << description << ",";
             ss << availableTimeStart << ",";
             ss << availableTimeEnd << ",";
+            int id = 0;
             for (int i: reviewId){
-                ss << i << " ";
+                ss << i << (++id != reviewId.size() ? " " : "");
+            }
+            ss << ",";
+            id = 0;
+            for (int i: requestId){
+                ss << i << (++id != requestId.size() ? " " : "");
             }
             return ss.str();
         }
