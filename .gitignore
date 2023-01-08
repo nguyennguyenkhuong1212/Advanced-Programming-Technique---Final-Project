@@ -1,1 +1,4 @@
 *.exe
+*.o
+/test.dSYM
+test
