@@ -45,7 +45,7 @@ class Member{
         vector <int> occupiedHouseId;
         vector <int> reviewId;
         vector <int> requestId;
-
+        
     public: 
         Member(){};
 
