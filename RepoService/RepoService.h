@@ -130,7 +130,7 @@ class RepoService{
                 int id = stoi(data[0]);
                 string comment = data[1];
                 int score = stoi(data[2]);
-                int occupiedPersonId = stoi(data[4]);
+                int occupiedPersonId = stoi(data[3]);
                 HouseReview review(id, comment, score, occupiedPersonId);
                 houseReviewList.push_back(review);
                 if (inputFile.eof()) break;
@@ -151,8 +151,8 @@ class RepoService{
                 int id = stoi(data[0]);
                 string comment = data[1];
                 int score = stoi(data[2]);
-                int occupiedHouseId = stoi(data[4]);
-                int hostId = stoi(data[5]);
+                int occupiedHouseId = stoi(data[3]);
+                int hostId = stoi(data[4]);
                 MemberReview review(id, comment, score, occupiedHouseId, hostId);
                 memberReviewList.push_back(review);
                 if (inputFile.eof()) break;
