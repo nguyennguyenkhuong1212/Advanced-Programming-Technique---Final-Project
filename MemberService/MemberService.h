@@ -45,7 +45,6 @@ class Member{
         vector <int> occupiedHouseId;
         vector <int> reviewId;
         vector <int> requestId;
-        const vector<string> labels = {"Id", "Location", "Description", "Available Time Start", "Available Time End"};
 
     public: 
         Member(){};
