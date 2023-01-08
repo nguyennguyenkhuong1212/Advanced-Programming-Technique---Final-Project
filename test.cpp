@@ -43,6 +43,8 @@ int main(){
     //     cout << house.toDataLine() << endl;
     // }
 
+    // cout << "house.toDataLine() "<< endl;
+
     MainMenu menu;
     menu.run();
 

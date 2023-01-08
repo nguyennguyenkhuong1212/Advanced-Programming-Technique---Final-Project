@@ -1,3 +1,5 @@
+#ifndef MEMBERSERVICE_H
+#define MEMBERSERVICE_H
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -40,12 +42,15 @@ class Member{
         string phoneNumber;
         int creditPoint;
         vector <int> listedHouseId;
+        vector <int> occupiedHouseId;
         vector <int> reviewId;
         vector <int> requestId;
 
     public: 
-        Member(int id = 0, string username = "", string password = " ", string fullName = "", string phoneNumber = "", int creditPoint = 0, vector <int> listedHouseId = {}, vector <int> reviewId = {}, vector <int> requestId = {})
-        : id(id), username(username), password(password), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouseId(listedHouseId), reviewId(reviewId), requestId(requestId){};
+        Member(){};
+
+        Member(int id, string username, string password, string fullName, string phoneNumber, int creditPoint = 0, vector <int> listedHouseId = {}, vector <int> occupiedHouseId = {}, vector <int> reviewId = {}, vector <int> requestId = {})
+        : id(id), username(username), password(password), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouseId(listedHouseId), occupiedHouseId(occupiedHouseId), reviewId(reviewId), requestId(requestId){};
 
         string toDataLine(){
             stringstream ss;
@@ -61,11 +66,44 @@ class Member{
             }
             ss << ",";
             id = 0;
+            for (int i: occupiedHouseId){
+                ss << i << (++id != occupiedHouseId.size() ? " " : "");
+            }
+            ss << ",";
+            id = 0;
             for (int i: reviewId){
                 ss << i << (++id != reviewId.size() ? " " : "");
+            }
+            ss << ",";
+            id = 0;
+            for (int i: requestId){
+                ss << i << (++id != requestId.size() ? " " : "");
             }
             return ss.str();
         }
 
+        string toDisplayLine(string prefix = ""){
+            stringstream ss;
+            ss << "\n";
+            ss << prefix << "ID: " << id << "\n";
+            ss << prefix << "Name: " << fullName << "\n";
+            return ss.str();
+        }
+
         friend class RepoService;
+        friend class MemberMenu;
+        friend class Menu;
+        friend bool findMemberById(int id, vector <Member> memberList, Member& res);
 };
+
+bool findMemberById(int id, vector <Member> memberList, Member& res){
+    for (Member member : memberList){
+        if (member.id == id){
+            res = member;
+            return true;
+        }
+    }
+    return false;
+}
+
+#endif

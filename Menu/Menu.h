@@ -51,9 +51,9 @@ class Menu{
             cout << "\nEEET2482/COSC2082 ASSIGNMENT\nVACATION HOUSE EXCHANGE APPLICATION\n\nInstructors: Mr. Linh Tran & Phong Ngo\nGroup: \ns3924577, Nguyen Nguyen Khuong\ns3931605, Nguyen Cuong Anh Minh\ns3880115, Nguyen Chau Loan\ns3878280, Min Chi Gia Khiem\n\n";
         }
 
-        void run(){
-            welcome();
+        void run(string endMenuKey = "X"){
             while (true) {
+                welcome();
                 displayOptions();
                 string input = "";
                 cout << "Enter an option: ";
@@ -61,6 +61,8 @@ class Menu{
                     getline(cin, input);
                 }
                 while (input == "");
+                if (input == "X") continue;
+                if (input == endMenuKey) break;
                 bool foundOption = false;
                 for (Option option : options) {
                     if (option.getToggleKey() == input) {
@@ -84,6 +86,24 @@ class Menu{
             repo.writeRequestListIntoFile(requestList, false);
             repo.writeHouseReviewListIntoFile(houseReviewList, false);
             exit(0);
+        }
+
+        void viewAllOccupiers(House house, string prefix = ""){
+            for(int id: house.occupierId){
+                Member res;
+                if (findMemberById(id, memberList, res)){
+                    cout << res.toDisplayLine("\t\t");
+                }
+            }
+        }
+
+        void viewAllHouseListed(Member member, string prefix = ""){
+            for (int id: member.listedHouseId){
+                House res;
+                if (findHouseById(id, houseList, res)) {
+                    cout << res.toDisplayLine(prefix);
+                }
+            }
         }
 
         friend class MainMenu;

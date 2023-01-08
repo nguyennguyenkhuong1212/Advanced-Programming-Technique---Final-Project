@@ -1,3 +1,5 @@
+#ifndef HOUSESERVICE_H
+#define HOUSESERVICE_H
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -36,12 +38,15 @@ class House{
         string description;
         string availableTimeStart;
         string availableTimeEnd;
+        vector <int> occupierId;
         vector <int> reviewId;
         vector <int> requestId;
     
     public:
-        House(int id = 0, string location = "", string description = "", string availableTimeStart = 0, string availableTimeEnd = 0, vector <int> reviewId = {}, vector <int> requestId = {})
-        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd), reviewId(reviewId), requestId(requestId){};
+        House(){};
+
+        House(int id, string location, string description, string availableTimeStart, string availableTimeEnd, vector <int> occupierId, vector <int> reviewId, vector <int> requestId)
+        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd), occupierId(occupierId), reviewId(reviewId), requestId(requestId){};
 
         string toDataLine(){
             stringstream ss;
@@ -51,6 +56,11 @@ class House{
             ss << availableTimeStart << ",";
             ss << availableTimeEnd << ",";
             int id = 0;
+            for (int i: occupierId){
+                ss << i << (++id != occupierId.size() ? " " : "");
+            }
+            ss << ",";
+            id = 0;
             for (int i: reviewId){
                 ss << i << (++id != reviewId.size() ? " " : "");
             }
@@ -62,8 +72,10 @@ class House{
             return ss.str();
         }
 
-        string toDisplayLine(string prefix){
+        string toDisplayLine(string prefix = ""){
             stringstream ss;
+            ss << "\n";
+            ss << prefix << "House ID: " << id << "\n";
             ss << prefix << "Location: " << location << "\n";
             ss << prefix << "Description: " << description << "\n";
             ss << prefix << "Available Time Start: " << availableTimeStart << "\n";
@@ -71,5 +83,20 @@ class House{
             return ss.str();
         }
         
-        friend class Member;
+        friend class RepoService;
+        friend class MemberMenu;
+        friend class Menu;
+        friend bool findHouseById(int id, vector <House> houseList, House& res);
 };
+
+bool findHouseById(int id, vector <House> houseList, House& res){
+    for(House house: houseList){
+        if (house.id == id){
+            res = house;
+            return true;
+        }
+    }
+    return false;
+}
+
+#endif
