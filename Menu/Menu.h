@@ -40,7 +40,7 @@ class Menu{
 
         void displayOptions(){
             Option temp;
-            TableFormatter table = TableFormatter(temp.getFields());
+            TableFormatter table(temp.getFields());
             for(Option option : options){
                 table.addRow(option.toStringArray());
             }
@@ -48,7 +48,7 @@ class Menu{
         }
 
         void welcome(){
-            cout << "\nEEET2482/COSC2082 ASSIGNMENT\nVACATION HOUSE EXCHANGE APPLICATION\n\nInstructors: Mr. Linh Tran & Phong Ngo\nGroup: \ns3924577, Nguyen Nguyen Khuong\ns3931605, Nguyen Cuong Anh Minh\ns3880115, Nguyen Chau Loan\ns3878280, Min Chi Gia Khiem\n\n";
+            cout << "\nEEET2482/COSC2082 ASSIGNMENT\nVACATION HOUSE EXCHANGE APPLICATION\n\nInstructors: Mr. Linh Tran & Phong Ngo\nGroup: \ns3924577, Nguyen Nguyen Khuong\ns3931605, Nguyen Cuong Anh Minh\ns3880115, Nguyen Chau Loan\ns3878280, Min Chi Gia Khiem\n";
         }
 
         void run(string endMenuKey = "X"){
@@ -56,7 +56,7 @@ class Menu{
                 welcome();
                 displayOptions();
                 string input = "";
-                cout << "Enter an option: ";
+                cout << "\nEnter an option: ";
                 do {
                     getline(cin, input);
                 }
@@ -89,21 +89,27 @@ class Menu{
         }
 
         void viewAllOccupiers(House house, string prefix = ""){
+            vector <string> labels = {"ID", "Username", "Full Name"};
+            TableFormatter table(labels);
             for(int id: house.occupierId){
                 Member res;
                 if (findMemberById(id, memberList, res)){
-                    cout << res.toDisplayLine("\t\t");
+                    table.addRow(res.toStringArray());
                 }
             }
+            table.display("\t");
         }
 
         void viewAllHouseListed(Member member, string prefix = ""){
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End"};
+            TableFormatter table(labels);
             for (int id: member.listedHouseId){
                 House res;
                 if (findHouseById(id, houseList, res)) {
-                    cout << res.toDisplayLine(prefix);
+                    table.addRow(res.toStringArray());
                 }
             }
+            table.display("\t");
         }
 
         friend class MainMenu;
