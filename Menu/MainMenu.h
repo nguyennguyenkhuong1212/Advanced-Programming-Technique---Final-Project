@@ -95,7 +95,7 @@ class MainMenu : public Menu {
             }
             if (!accountExisted){
                 cout << "\nCannot find this user. Return back to main menu...\n";
-                delay(1000);
+                delay(1500);
             }
         }
 

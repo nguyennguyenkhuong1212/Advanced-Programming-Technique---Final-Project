@@ -31,6 +31,8 @@ class MemberReview : public Review {
             ss << hostId;
             return ss.str();
         }
+
+        friend class Menu;
 };
 
 class Member{

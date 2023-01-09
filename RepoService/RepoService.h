@@ -73,22 +73,25 @@ class RepoService{
                 string description = data[2];
                 string availableTimeStart = data[3];
                 string availableTimeEnd = data[4];
+                int consumingPoints = stoi(data[5]);
+                double minimumRating = stod(data[6]);
                 vector <int> occupierId;
                 vector <int> reviewId;
                 vector <int> requestId;
-                vector <string> temp = split(data[5], ' ');
+                vector <string> temp = split(data[7], ' ');
                 for (string id : temp){
                     occupierId.push_back(stoi(id));
                 }
-                temp = split(data[6], ' ');
+                temp = split(data[8], ' ');
                 for (string id : temp){
                     reviewId.push_back(stoi(id));
                 }
-                temp = split(data[7], ' ');
+                temp = split(data[9], ' ');
                 for (string id : temp){
                     requestId.push_back(stoi(id));
                 }
-                House house(id, location, description, availableTimeStart, availableTimeEnd, occupierId, reviewId, requestId);
+                bool isListed = (data[10] == "1");
+                House house(id, location, description, availableTimeStart, availableTimeEnd, consumingPoints, minimumRating, occupierId, reviewId, requestId, isListed);
                 houseList.push_back(house);
                 if (inputFile.eof()) break;
             }

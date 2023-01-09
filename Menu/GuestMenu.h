@@ -38,7 +38,7 @@ class GuestMenu : public Menu{
             }
             if (accountExists){
                 cout << "\nAccount already exists. Return back...\n";
-                delay(1000);
+                delay(1500);
                 return;
             }
             cout << "Enter password: ";

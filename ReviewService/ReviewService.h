@@ -8,6 +8,7 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
+#include "../utils/ReadInt.h"
 #include "../utils/ReadString.h"
 using namespace std;
 
@@ -28,6 +29,7 @@ class Review{
             readString(comment);
         }
 
+        friend class Menu;
         friend class HouseReview;
         friend class MemberReview;
 };
