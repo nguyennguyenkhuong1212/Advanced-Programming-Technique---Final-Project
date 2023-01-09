@@ -45,7 +45,7 @@ class Member{
         vector <int> occupiedHouseId;
         vector <int> reviewId;
         vector <int> requestId;
-
+        
     public: 
         Member(){};
 
@@ -90,8 +90,25 @@ class Member{
             return ss.str();
         }
 
+        vector <string> toStringArray(bool getAllInfo = false) {
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(username);
+            if (getAllInfo) {
+                res.push_back(password);
+            }
+            res.push_back(fullName);
+            if (getAllInfo) {
+                res.push_back(phoneNumber);
+                res.push_back(to_string(creditPoint));
+            }
+            return res;
+        }
+
         friend class RepoService;
+        friend class MainMenu;
         friend class MemberMenu;
+        friend class GuestMenu;
         friend class Menu;
         friend bool findMemberById(int id, vector <Member> memberList, Member& res);
 };

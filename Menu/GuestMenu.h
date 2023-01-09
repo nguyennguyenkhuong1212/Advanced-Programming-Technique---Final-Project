@@ -9,6 +9,7 @@
 #include <functional>
 #include "Menu.h"
 #include "../utils/ReadString.h"
+#include "../utils/Delay.h"
 using namespace std;
 
 class GuestMenu : public Menu{
@@ -28,6 +29,18 @@ class GuestMenu : public Menu{
             string phoneNumber;
             cout << "Enter username: ";
             readString(username);
+            bool accountExists = false;
+            for (Member member : memberList){
+                if (member.username == username) {
+                    accountExists = true;
+                    break;
+                }
+            }
+            if (accountExists){
+                cout << "\nAccount already exists. Return back...\n";
+                delay(1000);
+                return;
+            }
             cout << "Enter password: ";
             readString(password);
             cout << "Enter full name: ";
