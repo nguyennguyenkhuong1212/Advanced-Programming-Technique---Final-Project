@@ -34,7 +34,7 @@ class AdminMenu : public Menu{
         }
 
         void viewAllHouses(string prefix = ""){
-            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End"};
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points", "Minimum Score Required"};
             TableFormatter table(labels);
             for(House house: houseList){
                 table.addRow(house.toStringArray());
