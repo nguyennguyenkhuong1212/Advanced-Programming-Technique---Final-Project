@@ -82,6 +82,16 @@ class House{
             ss << prefix << "Available Time End: " << availableTimeEnd << "\n";
             return ss.str();
         }
+
+        vector <string> toStringArray(){
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(location);
+            res.push_back(description);
+            res.push_back(availableTimeStart);
+            res.push_back(availableTimeEnd);
+            return res;
+        }
         
         friend class RepoService;
         friend class MemberMenu;
