@@ -65,6 +65,11 @@ class MainMenu : public Menu {
         void useApplicationAsGuest(){
             GuestMenu guestMenu(houseList, memberList, houseReviewList, memberReviewList, requestList);
             guestMenu.run("3");
+            houseList = guestMenu.houseList;
+            memberList = guestMenu.memberList;
+            houseReviewList = guestMenu.houseReviewList;
+            memberReviewList = guestMenu.memberReviewList;
+            requestList = guestMenu.requestList;
         }
 
         void useApplicationAsMember(){
@@ -79,6 +84,11 @@ class MainMenu : public Menu {
                 if (member.username == username && member.password == password){
                     MemberMenu memberMenu(houseList, memberList, houseReviewList, memberReviewList, requestList, member);
                     memberMenu.run("11");
+                    houseList = memberMenu.houseList;
+                    memberList = memberMenu.memberList;
+                    houseReviewList = memberMenu.houseReviewList;
+                    memberReviewList = memberMenu.memberReviewList;
+                    requestList = memberMenu.requestList;
                     accountExisted = true;
                     break;
                 }
@@ -100,6 +110,11 @@ class MainMenu : public Menu {
                 if (password == "admin"){
                     AdminMenu adminMenu(houseList, memberList, houseReviewList, memberReviewList, requestList);
                     adminMenu.run("3");
+                    houseList = adminMenu.houseList;
+                    memberList = adminMenu.memberList;
+                    houseReviewList = adminMenu.houseReviewList;
+                    memberReviewList = adminMenu.memberReviewList;
+                    requestList = adminMenu.requestList;
                 }
             } 
         }
