@@ -110,6 +110,7 @@ class RepoService{
                 int occupiedHouseId = stoi(data[2]);
                 string timeStart = data[3];
                 string timeEnd = data[4];
+                bool isDelete = (data[5] == "1");
                 Request request(id, occupiedPersonId, occupiedHouseId, timeStart, timeEnd);
                 requestList.push_back(request);
                 if (inputFile.eof()) break;
@@ -226,4 +227,3 @@ class RepoService{
             outputFile.close();
         }
 };
-

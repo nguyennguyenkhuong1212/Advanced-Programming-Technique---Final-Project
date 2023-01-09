@@ -17,10 +17,11 @@ class Request {
         int occupiedHouseId;
         string timeStart;
         string timeEnd;
+        bool isDelete;
 
     public:
-        Request(int id = 0, int occupiedPersonId = 0, int occupiedHouseId = 0, string timeStart = "", string timeEnd = "")
-        : id(id), occupiedPersonId(occupiedPersonId), occupiedHouseId(occupiedHouseId), timeStart(timeStart), timeEnd(timeEnd){};
+        Request(int id = 0, int occupiedPersonId = 0, int occupiedHouseId = 0, string timeStart = "", string timeEnd = "", bool isDelete = false)
+        : id(id), occupiedPersonId(occupiedPersonId), occupiedHouseId(occupiedHouseId), timeStart(timeStart), timeEnd(timeEnd), isDelete(isDelete){};
 
         string toDataLine(){
             stringstream ss;
@@ -28,7 +29,8 @@ class Request {
             ss << occupiedPersonId << ",";
             ss << occupiedHouseId << ",";
             ss << timeStart << ",";
-            ss << timeEnd;
+            ss << timeEnd << ",";
+            ss << isDelete;
             return ss.str();
         }
 };
