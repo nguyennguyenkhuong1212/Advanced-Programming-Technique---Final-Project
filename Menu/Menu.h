@@ -122,23 +122,32 @@ class Menu{
         bool viewAllHouseListed(Member member, string prefix = ""){ // Use only for members
             vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
             TableFormatter table(labels);
-            bool found = false;
             House res;
             if (findHouseById(member.listedHouseId, houseList, res)) {
                 if (res.isListed) {
-                    found = true;
                     table.addRow(res.toStringArray());
                 }
-            }
-            if (found == false){
-                cout << "\n" << prefix << "You listed no house.\n";
-                return false;
             }
             table.display(prefix);
             return true;
         }
 
-        double getScore(Member member){
+        bool viewAllHouseOccupied(Member member, string prefix = ""){ // Use only for members
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
+            TableFormatter table(labels);
+            bool found = false;
+            House res;
+            for (int houseId: member.occupiedHouseId){
+                if (findHouseById(houseId, houseList, res)) {
+                    found = true;
+                    table.addRow(res.toStringArray());
+                }
+            }
+            if (found == false){
+                cout << "\n" << prefix << "You occupied no house.\n";
+                return false;
+            }
+            return true;
             double sum = 0;
             double i = 0;
             for (int id: member.reviewId){

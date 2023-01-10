@@ -30,6 +30,16 @@ class HouseReview : public Review {
             ss << occupiedPersonId << ",";
             return ss.str();
         }
+
+        vector <string> toStringArray(){
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(comment);
+            res.push_back(to_string(score));
+            return res;
+        }
+
+        friend class MemberMenu;
 };
 
 class House{
