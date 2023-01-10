@@ -32,7 +32,17 @@ class MemberReview : public Review {
             return ss.str();
         }
 
+        vector <string> toStringArray(){
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(comment);
+            res.push_back(to_string(score));
+            res.push_back(to_string(occupiedHouseId));
+            return res;
+        }
+
         friend class Menu;
+        friend class MemberMenu;
 };
 
 class Member{
@@ -44,14 +54,14 @@ class Member{
         string phoneNumber;
         int creditPoint;
         int listedHouseId;
-        int occupiedHouseId;
+        vector <int> occupiedHouseId;
         vector <int> reviewId;
         vector <int> requestId;
         
     public: 
         Member(){};
 
-        Member(int id, string username, string password, string fullName, string phoneNumber, int creditPoint = 0, int listedHouseId = -1, int occupiedHouseId = -1, vector <int> reviewId = {}, vector <int> requestId = {})
+        Member(int id, string username, string password, string fullName, string phoneNumber, int creditPoint = 0, int listedHouseId = -1, vector <int> occupiedHouseId = {}, vector <int> reviewId = {}, vector <int> requestId = {})
         : id(id), username(username), password(password), fullName(fullName), phoneNumber(phoneNumber), creditPoint(creditPoint), listedHouseId(listedHouseId), occupiedHouseId(occupiedHouseId), reviewId(reviewId), requestId(requestId){};
 
         string toDataLine(){
@@ -63,8 +73,12 @@ class Member{
             ss << phoneNumber << ",";
             ss << creditPoint << ",";
             ss << listedHouseId << ",";
-            ss << occupiedHouseId << ",";
             int id = 0;
+            for (int i: occupiedHouseId){
+                ss << i << (++id != occupiedHouseId.size() ? " " : "");
+            }
+            ss << ",";
+            id = 0;
             for (int i: reviewId){
                 ss << i << (++id != reviewId.size() ? " " : "");
             }
