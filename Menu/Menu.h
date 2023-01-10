@@ -147,11 +147,7 @@ class Menu{
                 cout << "\n" << prefix << "You occupied no house.\n";
                 return false;
             }
-            table.display(prefix);
             return true;
-        }
-
-        double getScore(Member member){
             double sum = 0;
             double i = 0;
             for (int id: member.reviewId){

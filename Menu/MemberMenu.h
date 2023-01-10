@@ -143,13 +143,6 @@ class MemberMenu : public Menu{
             TableFormatter table2(tempLabels);
             table2.addRow({"1", "Ho Chi Minh City"});
             table2.addRow({"2", "Hue"});
-            table2.addRow({"3", "Ha Noi"});
-            cout << "\n";
-            table2.display("\t");
-            cout << "\n";
-            cout << "Enter location ID: ";
-            readString(location);
-            if (location != "1" && location != "2" && location != "3"){
                 cout << "Invalid location. Return back...\n";
                 delay(1500);
                 return;
@@ -158,40 +151,12 @@ class MemberMenu : public Menu{
             if (location == "2") location = "Hue";
             if (location == "3") location = "Ha Noi";
             bool found = false;
-            for (House house: houseList){
-                if (house.location == location && house.consumingPoints <= curMember.creditPoint && house.id != curMember.listedHouseId && getScore(curMember) >= house.minimumRating){
-                    table.addRow(house.toStringArray());
-                    found = true;
                 }
-            }
-            if (!found){
-                cout << "\n\tNo house meets your conditions. Return back...\n";
-                delay(1500);
                 return;
-            }
-            table.display("\t");
-            waitUntilKeyPressed("\t");
-        };
 
-        void requestToOccupy(){
-            cout << "\n\tThis is all the house meet your conditions: \n";
-            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
-            TableFormatter table(labels);
             bool found = false;
-            for (House house: houseList){
-                if (house.consumingPoints <= curMember.creditPoint && house.id != curMember.listedHouseId && getScore(curMember) >= house.minimumRating){
-                    table.addRow(house.toStringArray());
-                    found = true;
                 }
-            }
-            if (!found){
-                cout << "\n\tNo house meets your conditions. Return back...\n";
-                delay(1500);
                 return;
-            }
-            table.display("\t");
-            int id;
-            cout << "\n\tEnter the ID of the house you want to occupy: ";
             if (!readInt(id)){
                 cout << "\n\tInvalid house ID. Returning back...\n";
                 delay(1500);
@@ -218,37 +183,52 @@ class MemberMenu : public Menu{
                 return;
             };
             cout << "\n\tEnter the end time of your occupying period: \n";
+<<<<<<< HEAD
             if (!readDate(timeEnd, "\t")){
+=======
+            if (!readDate(timeEnd)){
                 delay(1500);
-                return;
-            };
-            if (timeStart > res.availableTimeEnd || timeEnd < res.availableTimeStart){
                 cout << "\n\tInvalid input. Return back...\n";
                 delay(1500);
                 return;
             }
             for (Request request: requestList){
+<<<<<<< HEAD
                 if (request.isDelete) continue;
                 if (request.occupiedPersonId != curMember.id) continue;
                 if (request.isApproved && request.isOverlapped(timeStart, timeEnd)){
+=======
+                if (request.isDelete || request.occupiedHouseId != id || !request.isOverlapped(timeStart, timeEnd)) continue;
+                if (request.isApproved){
+>>>>>>> mirror
                     cout << "\n\tTime overlapped with another approved request. Return back...\n";
                     delay(1500);
                     return;
                 }
+<<<<<<< HEAD
                 if (request.occupiedHouseId == id && request.occupiedPersonId == curMember.id && request.isOverlapped(timeStart, timeEnd, true)){
+=======
+                if (request.occupiedPersonId == curMember.id && request.isOverlapped(timeStart, timeEnd, true)){
+>>>>>>> mirror
                     cout << "\n\tYou have a request overlapped with this request. Your request will be automatically merged...\n";
                     timeStart = (timeStart < request.timeStart ? timeStart : request.timeStart);
                     timeEnd = (timeEnd > request.timeEnd ? timeEnd : request.timeEnd);
                     requestList[request.id].timeStart = timeStart;
                     requestList[request.id].timeEnd = timeEnd;
+<<<<<<< HEAD
                     cout << "\n\tThis new request has been merged. Total consuming points: " << calDifference(timeStart, timeEnd) * houseList[id].consumingPoints << "\n";
+=======
+>>>>>>> mirror
                     waitUntilKeyPressed("\t");
                     return;
                 }
             }
             Request newRequest(requestList.size(), curMember.id, id, timeStart, timeEnd);
             requestList.push_back(newRequest);
+<<<<<<< HEAD
             cout << "\n\tThis new request has been created. Total consuming points: " << calDifference(timeStart, timeEnd) * houseList[id].consumingPoints << "\n";
+=======
+>>>>>>> mirror
             waitUntilKeyPressed("\t");
         }
 
@@ -322,6 +302,7 @@ class MemberMenu : public Menu{
             };
             found = false;
             for (Request request : requestList){
+<<<<<<< HEAD
                 if (request.isDelete) continue;
                 if (request.id == requestId) continue;
                 if (!request.isApproved) continue;
@@ -345,6 +326,18 @@ class MemberMenu : public Menu{
                     requestList[requestId].isApproved = true;
                     memberList[request.occupiedPersonId].creditPoint -= (houseList[request.occupiedHouseId].consumingPoints) * calDifference(request.timeStart, request.timeEnd);
                     memberList[request.occupiedPersonId].occupiedHouseId.push_back(request.occupiedHouseId);
+=======
+                if (!request.occupiedHouseId == houseId || request.isDelete) continue;
+                if (request.id == requestId){
+                    requestList[requestId].isApproved = true;
+                    if (memberList[request.occupiedPersonId].occupiedHouseId != -1){
+                        cout << "\n\tThis member has already occupied a house. Return back...\n";
+                        delay(1500);
+                        return;
+                    }
+                    memberList[request.occupiedPersonId].creditPoint -= (houseList[request.occupiedHouseId].consumingPoints) * calDifference(request.timeStart, request.timeEnd);
+                    memberList[request.occupiedPersonId].occupiedHouseId = request.occupiedHouseId;
+>>>>>>> mirror
                     found = true;
                     break;
                 }
@@ -363,6 +356,7 @@ class MemberMenu : public Menu{
             waitUntilKeyPressed("\t");
         }
 
+<<<<<<< HEAD
         void rateOccupiedHouse(){
             cout << "\n\tThis is all the house that you have occupied: \n";
             if (!viewAllHouseOccupied(curMember, "\t")){
@@ -392,6 +386,8 @@ class MemberMenu : public Menu{
             waitUntilKeyPressed("\t");
         }
         
+=======
+>>>>>>> mirror
         void topUp(){
             for (int i = 0; i < memberList.size(); i++){
                 if (memberList[i].id == curMember.id){
@@ -458,6 +454,7 @@ class MemberMenu : public Menu{
             memberReviewList.push_back(review);
             cout << "\n";
             delay(1500);
+<<<<<<< HEAD
             waitUntilKeyPressed("\t");
         }
 
@@ -518,5 +515,9 @@ class MemberMenu : public Menu{
             waitUntilKeyPressed("\t");
         }
         
+=======
+        }
+
+>>>>>>> mirror
         friend class MainMenu;
 };

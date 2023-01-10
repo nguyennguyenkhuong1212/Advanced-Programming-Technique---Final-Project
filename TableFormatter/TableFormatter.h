@@ -44,8 +44,10 @@ class TableFormatter {
             }
         }
 
-        void printTableRow(){
+        void printTableRow(string prefix = ""){
+            cout << prefix;
             printDelimiter();
+            cout << prefix;
             for(int i = 0; i < labels.size(); i++){
                 if (i == 0){
                     cout << labels[i];
@@ -58,8 +60,10 @@ class TableFormatter {
                 cout << setw(distance) << labels[i];
             }
             cout << endl;
+            cout << prefix;
             printDelimiter();
             for(int i = 0; i < rows.size(); i++){
+                cout << prefix;
                 for(int j = 0; j < rows[i].size(); j++){
                     int distance = 0;
                     if (j != 0) {
@@ -73,17 +77,21 @@ class TableFormatter {
                     }
                 }
                 if (i != rows.size() - 1) {
-                    cout << endl;
+                    cout << endl << prefix;
                     printDelimiter();
                 } else {
                     cout << endl;
                 }
             }
-        }
-
-        void display(){
-            setMaxLengthOfColumn();
-            printTableRow();
+            cout << prefix;
             printDelimiter();
         }
+
+        void display(string prefix = ""){
+            cout << "\n";
+            setMaxLengthOfColumn();
+            printTableRow(prefix);
+        }
+
+        friend class Menu;
 };

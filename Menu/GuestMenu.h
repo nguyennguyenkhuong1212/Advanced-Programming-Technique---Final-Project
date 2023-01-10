@@ -9,6 +9,8 @@
 #include <functional>
 #include "Menu.h"
 #include "../utils/ReadString.h"
+#include "../utils/ReadInt.h"
+#include "../utils/Delay.h"
 using namespace std;
 
 class GuestMenu : public Menu{
@@ -28,12 +30,29 @@ class GuestMenu : public Menu{
             string phoneNumber;
             cout << "Enter username: ";
             readString(username);
+            bool accountExists = false;
+            for (Member member : memberList){
+                if (member.username == username) {
+                    accountExists = true;
+                    break;
+                }
+            }
+            if (accountExists){
+                cout << "\nAccount already exists. Return back...\n";
+                delay(1500);
+                return;
+            }
             cout << "Enter password: ";
             readString(password);
             cout << "Enter full name: ";
             readString(fullName);
             cout << "Enter phone number: ";
             readString(phoneNumber);
+            if (!is_number(phoneNumber)){
+                cout << "\nPhone number invalid. Return back...\n";
+                delay(1500);
+                return;
+            }
             int id = memberList.size();
             Member member(id, username, password, fullName, phoneNumber);
             memberList.push_back(member);
@@ -43,8 +62,8 @@ class GuestMenu : public Menu{
             cout << "\n";
             int i = 0;
             for (House house : houseList){
-                cout << "- House " << ++i << ": " << endl;
-                cout << house.toDisplayLine("\t") << "\n";
+                cout << "\t- House " << ++i << ": " << endl;
+                cout << house.toDisplayLine("\t\t") << "\n";
             }
         }
 };
