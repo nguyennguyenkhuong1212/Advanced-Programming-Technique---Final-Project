@@ -33,10 +33,14 @@ class RepoService{
                 string phoneNumber = data[4];
                 int creditPoint = stoi(data[5]);
                 int listedHouseId = (data[6] == "" ? -1 : stoi(data[6]));
-                int occupiedHouseId = (data[7] == "" ? -1 : stoi(data[7]));
+                vector <int> occupiedHouseId;
                 vector <int> reviewId;
                 vector <int> requestId;
-                vector <string> temp = split(data[8], ' ');
+                vector <string> temp = split(data[7], ' ');
+                for (string id : temp){
+                    occupiedHouseId.push_back(stoi(id));
+                }
+                temp = split(data[8], ' ');
                 for (string id : temp){
                     reviewId.push_back(stoi(id));
                 }
