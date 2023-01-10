@@ -13,6 +13,8 @@
 #include "MemberMenu.h"
 #include "AdminMenu.h"
 #include "../RepoService/RepoService.h"
+#include "../utils/Delay.h"
+
 using namespace std;
 
 class MainMenu : public Menu {
@@ -20,13 +22,13 @@ class MainMenu : public Menu {
         MainMenu(){
             this->addOption(Option("1", "Guest", [&]() -> void{useApplicationAsGuest();}));
             this->addOption(Option("2", "Member", [&]() -> void{useApplicationAsMember();}));
-            this->addOption(Option("3", "Admin"));
+            this->addOption(Option("3", "Admin", [&]() -> void{useApplicationAsAdmin();}));
         }
 
         void displayOptions(){
             Option temp;
             const vector <string> fields = {"Input", "Role"};
-            TableFormatter table = TableFormatter(fields);
+            TableFormatter table(fields);
             for(Option option : options){
                 table.addRow(option.toStringArray());
             }
@@ -46,7 +48,7 @@ class MainMenu : public Menu {
                 displayOptions();
                 cout << "\nYour could also exit the application by enter 4 !!!\n\n";
                 string input = "";
-                cout << "Enter an option: ";
+                cout << "Enter your choice: ";
                 do {
                     getline(cin, input);
                 }
@@ -63,10 +65,57 @@ class MainMenu : public Menu {
         void useApplicationAsGuest(){
             GuestMenu guestMenu(houseList, memberList, houseReviewList, memberReviewList, requestList);
             guestMenu.run("3");
+            houseList = guestMenu.houseList;
+            memberList = guestMenu.memberList;
+            houseReviewList = guestMenu.houseReviewList;
+            memberReviewList = guestMenu.memberReviewList;
+            requestList = guestMenu.requestList;
         }
 
         void useApplicationAsMember(){
-            MemberMenu memberMenu(houseList, memberList, houseReviewList, memberReviewList, requestList, memberList[0]);
-            memberMenu.run("10");
+            string username;
+            string password;
+            cout << "Enter username: ";
+            readString(username);
+            cout << "Enter password: ";
+            readString(password);
+            bool accountExisted = false;
+            for (Member member : memberList){
+                if (member.username == username && member.password == password){
+                    MemberMenu memberMenu(houseList, memberList, houseReviewList, memberReviewList, requestList, member);
+                    memberMenu.run("13");
+                    houseList = memberMenu.houseList;
+                    memberList = memberMenu.memberList;
+                    houseReviewList = memberMenu.houseReviewList;
+                    memberReviewList = memberMenu.memberReviewList;
+                    requestList = memberMenu.requestList;
+                    accountExisted = true;
+                    break;
+                }
+            }
+            if (!accountExisted){
+                cout << "\nCannot find this user. Return back to main menu...\n";
+                delay(1500);
+            }
+        }
+
+        void useApplicationAsAdmin(){
+            string username;
+            string password;
+            cout << "Enter username: ";
+            readString(username);
+            cout << "Enter password: ";
+            readString(password);
+            if (username == "admin"){
+                if (password == "admin"){
+                    AdminMenu adminMenu(houseList, memberList, houseReviewList, memberReviewList, requestList);
+                    adminMenu.run("3");
+                    houseList = adminMenu.houseList;
+                    memberList = adminMenu.memberList;
+                    houseReviewList = adminMenu.houseReviewList;
+                    memberReviewList = adminMenu.memberReviewList;
+                    requestList = adminMenu.requestList;
+                }
+            } 
         }
 };

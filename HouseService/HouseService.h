@@ -11,6 +11,7 @@
 #include <functional>
 #include <algorithm>
 #include "../ReviewService/ReviewService.h"
+#include "../DateService/Date.h"
 using namespace std;
 
 class HouseReview : public Review {
@@ -29,6 +30,16 @@ class HouseReview : public Review {
             ss << occupiedPersonId << ",";
             return ss.str();
         }
+
+        vector <string> toStringArray(){
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(comment);
+            res.push_back(to_string(score));
+            return res;
+        }
+
+        friend class MemberMenu;
 };
 
 class House{
@@ -36,25 +47,30 @@ class House{
         int id;
         string location;
         string description;
-        string availableTimeStart;
-        string availableTimeEnd;
+        Date availableTimeStart;
+        Date availableTimeEnd;
+        int consumingPoints;
+        double minimumRating; // minimum rating of occupier if he/she wants to occupy the house
         vector <int> occupierId;
         vector <int> reviewId;
         vector <int> requestId;
+        bool isListed;
     
     public:
         House(){};
 
-        House(int id, string location, string description, string availableTimeStart, string availableTimeEnd, vector <int> occupierId, vector <int> reviewId, vector <int> requestId)
-        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd), occupierId(occupierId), reviewId(reviewId), requestId(requestId){};
+        House(int id, string location, string description, Date availableTimeStart, Date availableTimeEnd, int consumingPoints, double minimumRating, vector <int> occupierId = {}, vector <int> reviewId = {}, vector <int> requestId = {}, bool isListed = true)
+        : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd), consumingPoints(consumingPoints), minimumRating(minimumRating), occupierId(occupierId), reviewId(reviewId), requestId(requestId), isListed(isListed){};
 
         string toDataLine(){
             stringstream ss;
             ss << id << ",";
             ss << location << ",";
             ss << description << ",";
-            ss << availableTimeStart << ",";
-            ss << availableTimeEnd << ",";
+            ss << availableTimeStart.toDataLine() << ",";
+            ss << availableTimeEnd.toDataLine() << ",";
+            ss << consumingPoints << ",";
+            ss << setprecision(2) << fixed << minimumRating << ",";
             int id = 0;
             for (int i: occupierId){
                 ss << i << (++id != occupierId.size() ? " " : "");
@@ -69,6 +85,8 @@ class House{
             for (int i: requestId){
                 ss << i << (++id != requestId.size() ? " " : "");
             }
+            ss << ",";
+            ss << isListed;
             return ss.str();
         }
 
@@ -78,9 +96,22 @@ class House{
             ss << prefix << "House ID: " << id << "\n";
             ss << prefix << "Location: " << location << "\n";
             ss << prefix << "Description: " << description << "\n";
-            ss << prefix << "Available Time Start: " << availableTimeStart << "\n";
-            ss << prefix << "Available Time End: " << availableTimeEnd << "\n";
+            ss << prefix << "Consuming Points: " << consumingPoints << "\n";
             return ss.str();
+        }
+
+        vector <string> toStringArray(){
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(location);
+            res.push_back(description);
+            res.push_back(availableTimeStart.toDisplayLine());
+            res.push_back(availableTimeEnd.toDisplayLine());
+            res.push_back(to_string(consumingPoints));
+            stringstream ss;
+            ss << setprecision(2) << fixed << minimumRating;
+            res.push_back(ss.str());
+            return res;
         }
         
         friend class RepoService;
