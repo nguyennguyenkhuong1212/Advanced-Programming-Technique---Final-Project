@@ -11,6 +11,7 @@
 #include "../utils/Option.h"
 #include "../TableFormatter/TableFormatter.h"
 #include "../utils/Delimiter.h"
+#include "../utils/Delay.h"
 #include "../HouseService/HouseService.h"
 #include "../MemberService/MemberService.h"
 #include "../RequestService/RequestService.h"
@@ -89,6 +90,9 @@ class Menu{
         }
 
         void viewAllOccupiers(House house, string prefix = ""){
+            if (house.occupierId.size() == 0) {
+                return;
+            }
             vector <string> labels = {"ID", "Username", "Full Name"};
             TableFormatter table(labels);
             for(int id: house.occupierId){
@@ -100,16 +104,54 @@ class Menu{
             table.display("\t");
         }
 
-        void viewAllHouseListed(Member member, string prefix = ""){
-            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End"};
+        void viewAllHouse(Member member, string prefix = ""){ // Use only for members
+            if (member.listedHouseId == -1){
+                cout << "\n\tYou listed no house. Returning back...\n";
+                delay(1500);
+                return;
+            }
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
             TableFormatter table(labels);
-            for (int id: member.listedHouseId){
-                House res;
-                if (findHouseById(id, houseList, res)) {
+            House res;
+            if (findHouseById(member.listedHouseId, houseList, res)) {
+                table.addRow(res.toStringArray());
+            }
+            table.display("\t");
+        }
+
+        bool viewAllHouseListed(Member member, string prefix = ""){ // Use only for members
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
+            TableFormatter table(labels);
+            bool found = false;
+            House res;
+            if (findHouseById(member.listedHouseId, houseList, res)) {
+                if (res.isListed) {
+                    found = true;
                     table.addRow(res.toStringArray());
                 }
             }
-            table.display("\t");
+            if (found == false){
+                cout << "\n" << prefix << "You listed no house.\n";
+                return false;
+            }
+            table.display(prefix);
+            return true;
+        }
+
+        double getScore(Member member){
+            double sum = 0;
+            double i = 0;
+            for (int id: member.reviewId){
+                for (MemberReview memberReview: memberReviewList){
+                    if (memberReview.id == id){
+                        sum += memberReview.score;
+                        i++;
+                        continue;
+                    }
+                }
+            }
+            if (i == 0) return 10;
+            return (sum / i);
         }
 
         friend class MainMenu;

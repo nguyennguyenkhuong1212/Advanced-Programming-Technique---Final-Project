@@ -77,7 +77,7 @@ class TableFormatter {
                     }
                 }
                 if (i != rows.size() - 1) {
-                    cout << endl;
+                    cout << endl << prefix;
                     printDelimiter();
                 } else {
                     cout << endl;
@@ -92,4 +92,6 @@ class TableFormatter {
             setMaxLengthOfColumn();
             printTableRow(prefix);
         }
+
+        friend class Menu;
 };

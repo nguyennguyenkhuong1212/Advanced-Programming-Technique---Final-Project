@@ -29,17 +29,17 @@ class AdminMenu : public Menu{
             for(Member member: memberList){
                 table.addRow(member.toStringArray(true));
             }
-            table.display();
-            waitUntilKeyPressed();
+            table.display("\t");
+            waitUntilKeyPressed("\t");
         }
 
         void viewAllHouses(string prefix = ""){
-            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End"};
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
             TableFormatter table(labels);
             for(House house: houseList){
                 table.addRow(house.toStringArray());
             }
-            table.display();
-            waitUntilKeyPressed();
+            table.display("\t");
+            waitUntilKeyPressed("\t");
         }
 };
