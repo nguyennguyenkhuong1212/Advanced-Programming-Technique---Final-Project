@@ -403,6 +403,7 @@ class MemberMenu : public Menu{
                         return;
                     }
                     memberList[i].creditPoint += money;
+                    curMember.creditPoint += money;
                     break;
                 }
             }
