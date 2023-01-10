@@ -83,7 +83,7 @@ class MainMenu : public Menu {
             for (Member member : memberList){
                 if (member.username == username && member.password == password){
                     MemberMenu memberMenu(houseList, memberList, houseReviewList, memberReviewList, requestList, member);
-                    memberMenu.run("11");
+                    memberMenu.run("12");
                     houseList = memberMenu.houseList;
                     memberList = memberMenu.memberList;
                     houseReviewList = memberMenu.houseReviewList;

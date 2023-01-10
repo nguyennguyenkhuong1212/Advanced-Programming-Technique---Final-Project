@@ -11,6 +11,7 @@
 #include <functional>
 #include <algorithm>
 #include "../ReviewService/ReviewService.h"
+#include "../DateService/Date.h"
 using namespace std;
 
 class HouseReview : public Review {
@@ -36,8 +37,8 @@ class House{
         int id;
         string location;
         string description;
-        string availableTimeStart;
-        string availableTimeEnd;
+        Date availableTimeStart;
+        Date availableTimeEnd;
         int consumingPoints;
         double minimumRating; // minimum rating of occupier if he/she wants to occupy the house
         vector <int> occupierId;
@@ -48,7 +49,7 @@ class House{
     public:
         House(){};
 
-        House(int id, string location, string description, string availableTimeStart, string availableTimeEnd, int consumingPoints, double minimumRating, vector <int> occupierId = {}, vector <int> reviewId = {}, vector <int> requestId = {}, bool isListed = true)
+        House(int id, string location, string description, Date availableTimeStart, Date availableTimeEnd, int consumingPoints, double minimumRating, vector <int> occupierId = {}, vector <int> reviewId = {}, vector <int> requestId = {}, bool isListed = true)
         : id(id), location(location), description(description), availableTimeStart(availableTimeStart), availableTimeEnd(availableTimeEnd), consumingPoints(consumingPoints), minimumRating(minimumRating), occupierId(occupierId), reviewId(reviewId), requestId(requestId), isListed(isListed){};
 
         string toDataLine(){
@@ -56,8 +57,8 @@ class House{
             ss << id << ",";
             ss << location << ",";
             ss << description << ",";
-            ss << availableTimeStart << ",";
-            ss << availableTimeEnd << ",";
+            ss << availableTimeStart.toDataLine() << ",";
+            ss << availableTimeEnd.toDataLine() << ",";
             ss << consumingPoints << ",";
             ss << setprecision(2) << fixed << minimumRating << ",";
             int id = 0;
@@ -85,8 +86,6 @@ class House{
             ss << prefix << "House ID: " << id << "\n";
             ss << prefix << "Location: " << location << "\n";
             ss << prefix << "Description: " << description << "\n";
-            ss << prefix << "Available Time Start: " << availableTimeStart << "\n";
-            ss << prefix << "Available Time End: " << availableTimeEnd << "\n";
             ss << prefix << "Consuming Points: " << consumingPoints << "\n";
             return ss.str();
         }
@@ -96,8 +95,8 @@ class House{
             res.push_back(to_string(id));
             res.push_back(location);
             res.push_back(description);
-            res.push_back(availableTimeStart);
-            res.push_back(availableTimeEnd);
+            res.push_back(availableTimeStart.toDisplayLine());
+            res.push_back(availableTimeEnd.toDisplayLine());
             res.push_back(to_string(consumingPoints));
             stringstream ss;
             ss << setprecision(2) << fixed << minimumRating;

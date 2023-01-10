@@ -8,6 +8,8 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
+#include "../MemberService/MemberService.h"
+#include "../DateService/Date.h"
 using namespace std;
 
 class Request {
@@ -15,22 +17,46 @@ class Request {
         int id;
         int occupiedPersonId;
         int occupiedHouseId;
-        string timeStart;
-        string timeEnd;
+        Date timeStart;
+        Date timeEnd;
+        bool isApproved;
         bool isDelete;
 
     public:
-        Request(int id = 0, int occupiedPersonId = 0, int occupiedHouseId = 0, string timeStart = "", string timeEnd = "", bool isDelete = false)
-        : id(id), occupiedPersonId(occupiedPersonId), occupiedHouseId(occupiedHouseId), timeStart(timeStart), timeEnd(timeEnd), isDelete(isDelete){};
+        Request(){};
+
+        Request(int id, int occupiedPersonId, int occupiedHouseId, Date timeStart, Date timeEnd, bool isApproved = false, bool isDelete = false)
+        : id(id), occupiedPersonId(occupiedPersonId), occupiedHouseId(occupiedHouseId), timeStart(timeStart), timeEnd(timeEnd), isApproved(isApproved), isDelete(isDelete){};
 
         string toDataLine(){
             stringstream ss;
             ss << id << ",";
             ss << occupiedPersonId << ",";
             ss << occupiedHouseId << ",";
-            ss << timeStart << ",";
-            ss << timeEnd << ",";
+            ss << timeStart.toDataLine() << ",";
+            ss << timeEnd.toDataLine() << ",";
+            ss << isApproved << ",";
             ss << isDelete;
             return ss.str();
         }
+
+        vector <string> toStringArray(){
+            vector <string> res;
+            res.push_back(to_string(id));
+            res.push_back(to_string(occupiedPersonId));
+            res.push_back(to_string(occupiedHouseId));
+            res.push_back(timeStart.toDataLine());
+            res.push_back(timeEnd.toDataLine());
+            res.push_back((isApproved ? "Yes" : "No"));
+            return res;
+        }
+
+        bool isOverlapped(Date timeStart, Date timeEnd, bool special = false){
+            Date tempStart = this->timeStart;
+            Date tempEnd = this->timeEnd;
+            if (special) return (tempEnd >= timeStart && timeEnd >= tempStart);
+            return (tempEnd > timeStart && timeEnd > tempStart);
+        }
+
+        friend class MemberMenu;
 };

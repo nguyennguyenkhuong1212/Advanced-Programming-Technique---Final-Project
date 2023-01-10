@@ -105,34 +105,33 @@ class Menu{
         }
 
         void viewAllHouse(Member member, string prefix = ""){ // Use only for members
-            if (member.listedHouseId.size() == 0){
+            if (member.listedHouseId == -1){
+                cout << "\n\tYou listed no house. Returning back...\n";
+                delay(1500);
                 return;
             }
-            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points", "Minimum Score Required"};
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
             TableFormatter table(labels);
-            for (int id: member.listedHouseId){
-                House res;
-                if (findHouseById(id, houseList, res)) {
-                    table.addRow(res.toStringArray());
-                }
+            House res;
+            if (findHouseById(member.listedHouseId, houseList, res)) {
+                table.addRow(res.toStringArray());
             }
             table.display("\t");
         }
 
         bool viewAllHouseListed(Member member, string prefix = ""){ // Use only for members
-            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points", "Minimum Score Required"};
+            vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
             TableFormatter table(labels);
             bool found = false;
-            for (int id: member.listedHouseId){
-                House res;
-                if (findHouseById(id, houseList, res)) {
-                    if (!res.isListed) continue;
+            House res;
+            if (findHouseById(member.listedHouseId, houseList, res)) {
+                if (res.isListed) {
                     found = true;
                     table.addRow(res.toStringArray());
                 }
             }
             if (found == false){
-                cout << "\n" << prefix << "You have no listed house.\n";
+                cout << "\n" << prefix << "You listed no house.\n";
                 return false;
             }
             table.display(prefix);
