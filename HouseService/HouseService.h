@@ -27,7 +27,7 @@ class HouseReview : public Review {
             ss << id << ",";
             ss << comment << ",";
             ss << score << ",";
-            ss << occupiedPersonId << ",";
+            ss << occupiedPersonId;
             return ss.str();
         }
 

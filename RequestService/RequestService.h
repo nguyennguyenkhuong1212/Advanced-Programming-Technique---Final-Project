@@ -40,14 +40,14 @@ class Request {
             return ss.str();
         }
 
-        vector <string> toStringArray(){
+        vector <string> toStringArray(bool special = false){
             vector <string> res;
             res.push_back(to_string(id));
-            res.push_back(to_string(occupiedPersonId));
+            if (!special) res.push_back(to_string(occupiedPersonId));
             res.push_back(to_string(occupiedHouseId));
             res.push_back(timeStart.toDataLine());
             res.push_back(timeEnd.toDataLine());
-            res.push_back((isApproved ? "Yes" : "No"));
+            if (!special) res.push_back((isApproved ? "Yes" : "No"));
             return res;
         }
 
