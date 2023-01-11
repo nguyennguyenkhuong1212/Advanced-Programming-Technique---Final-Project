@@ -80,10 +80,15 @@ class MainMenu : public Menu {
             cout << "Enter password: ";
             readString(password);
             bool accountExisted = false;
+            bool wrongPassword = false;
             for (Member member : memberList){
-                if (member.username == username && member.password == password){
+                if (member.username == username){
+                    if (member.password != password){
+                        wrongPassword = true;
+                        break;
+                    }
                     MemberMenu memberMenu(houseList, memberList, houseReviewList, memberReviewList, requestList, member);
-                    memberMenu.run("13");
+                    memberMenu.run("14");
                     houseList = memberMenu.houseList;
                     memberList = memberMenu.memberList;
                     houseReviewList = memberMenu.houseReviewList;
@@ -92,6 +97,11 @@ class MainMenu : public Menu {
                     accountExisted = true;
                     break;
                 }
+            }
+            if (wrongPassword){
+                cout << "\nWrong password. Return back to main menu...\n";
+                delay(1500);
+                return;
             }
             if (!accountExisted){
                 cout << "\nCannot find this user. Return back to main menu...\n";

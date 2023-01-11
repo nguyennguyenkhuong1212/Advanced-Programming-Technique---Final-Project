@@ -31,13 +31,14 @@ class MemberMenu : public Menu{
             this->addOption(Option("5", "Request to occupy a house", [&]() -> void {requestToOccupy();}));
             this->addOption(Option("6", "View all requests to your listed house", [&]() -> void {viewAllRequests();}));
             this->addOption(Option("7", "Accept a request to your listed house and reject all the others", [&]() -> void {acceptARequestToYourListedHouse();}));
-            this->addOption(Option("8", "Rate for your occupied house", [&]() -> void {rateOccupiedHouse();}));
-            this->addOption(Option("9", "Rate occupiers who had used your house", [&]() -> void {rateOccupier();}));
-            this->addOption(Option("10", "Top up money (1 dollar : 1 credit points)", [&]() -> void {topUp();}));
-            this->addOption(Option("11", "View all reviews about yourself", [&]() -> void {viewAllReviewAboutYourself();}));
-            this->addOption(Option("12", "View all reviews about your listed house", [&]() -> void {viewAllReviewAboutYourHouse();}));
-            this->addOption(Option("13", "Return to main menu"));
-            this->addOption(Option("14", "Exit the program", [&]() -> void {stop();}));
+            this->addOption(Option("8", "Occupy the house requested (only if the request approved)", [&]() -> void {occupyHouse();}));
+            this->addOption(Option("9", "Rate for your occupied house", [&]() -> void {rateOccupiedHouse();}));
+            this->addOption(Option("10", "Rate occupiers who had used your house", [&]() -> void {rateOccupier();}));
+            this->addOption(Option("11", "Top up money (1 dollar : 1 credit points)", [&]() -> void {topUp();}));
+            this->addOption(Option("12", "View all reviews about yourself", [&]() -> void {viewAllReviewAboutYourself();}));
+            this->addOption(Option("13", "View all reviews about your listed house", [&]() -> void {viewAllReviewAboutYourHouse();}));
+            this->addOption(Option("14", "Return to main menu"));
+            this->addOption(Option("15", "Exit the program", [&]() -> void {stop();}));
         }
 
         void viewInformation(){
@@ -49,6 +50,16 @@ class MemberMenu : public Menu{
             temp.push_back(ss.str());
             table.addRow(temp);
             table.display("\t");
+            if (curMember.listedHouseId == -1){
+                cout << "\n\tYou listed no house. Returning back...\n";
+                delay(1500);
+                return;
+            }
+            cout << "\n\tThis is your listed house:\n";
+            if (!viewAllHouseListed(curMember, "\t")) {
+                waitUntilKeyPressed("\t");
+                return;
+            }
             waitUntilKeyPressed("\t");
         }
 
@@ -121,8 +132,9 @@ class MemberMenu : public Menu{
             bool found = false;
             for (int i = 0; i < houseList.size(); i++) {
                 if (!houseList[i].isListed) continue;
-                if (houseList[i].id == houseId){
-                    curMember.listedHouseId = -1;
+                if (houseList[i].id == houseId){\
+                    memberList[curMember.id].listedHouseId = -1;
+                    curMember = memberList[curMember.id];
                     houseList[i].isListed = false;
                     found = true;
                 }
@@ -335,19 +347,10 @@ class MemberMenu : public Menu{
             for (Request request : requestList){
                 if (!request.occupiedHouseId == houseId || request.isDelete) continue;
                 if (!request.id == requestId) continue; 
-                if (memberList[request.occupiedPersonId].creditPoint < (houseList[request.occupiedHouseId].consumingPoints) * calDifference(request.timeStart, request.timeEnd)){
-                    cout << "\n\tThis person is out of credit points. This request will be deleted. Return back...\n";
-                    requestList[requestId].isDelete = true;
-                    delay(1500);
-                    return;
-                } 
-                else {
-                    requestList[requestId].isApproved = true;
-                    memberList[request.occupiedPersonId].creditPoint -= (houseList[request.occupiedHouseId].consumingPoints) * calDifference(request.timeStart, request.timeEnd);
-                    memberList[request.occupiedPersonId].occupiedHouseId.push_back(request.occupiedHouseId);
-                    found = true;
-                    break;
-                }
+                requestList[requestId].isApproved = true;
+                memberList[request.occupiedPersonId].requestId.push_back(request.id);
+                found = true;
+                break;
             }
             if (!found) {
                 cout << "\n\tCannot find this request. Return back...\n";
@@ -363,6 +366,65 @@ class MemberMenu : public Menu{
             waitUntilKeyPressed("\t");
         }
 
+        void occupyHouse(){
+            cout << "\n\tThis is all your approved requests: \n";
+            vector <string> labels = {"ID", "Occupied House ID", "Time Start", "Time End"};
+            TableFormatter table(labels);
+            bool found = false;
+            for (int i: curMember.requestId){
+                if (requestList[i].isDelete) continue;
+                if (!requestList[i].isApproved) continue;
+                found = true;
+                table.addRow(requestList[i].toStringArray(true));
+            }
+            if (!found){
+                cout << "\n\tNone of your requests is approved. Return back...\n";
+                delay(1500);
+                return;
+            }
+            table.display("\t");
+            int requestId;
+            cout << "\n\tEnter a request ID to occupy house: ";
+            if (!readInt(requestId)){
+                cout << "\n\tInvalid input. Return back...\n";
+                delay(1500);
+                return;
+            };
+            found = false;
+            for (Request request : requestList){
+                if (request.isDelete) continue;
+                if (!request.isApproved) continue;
+                if (request.id != requestId) continue;
+                found = true;
+                int money = (houseList[request.occupiedHouseId].consumingPoints) * calDifference(request.timeStart, request.timeEnd);
+                cout << "\n\tThe total consuming points is " << money << "\n";
+                while (curMember.creditPoint < money){
+                    string cont;
+                    cout << "\n\tYour account has insufficient credit to occupy this house. Do you want to top up (Y to continue)? ";
+                    readString(cont);
+                    if (cont == "Y" || cont == "y"){
+                        topUp();
+                        if (curMember.creditPoint >= money) {
+                            cout << "\n\tYour account has sufficient credit to occupy this house. Processing...\n";
+                            delay(1500);
+                            break;
+                        }
+                    }
+                    else {
+                        cout << "\n\tThis request will be deleted. Returning back...\n";
+                        requestList[request.id].isDelete = true;
+                        delay(1500);
+                        return;
+                    }
+                }
+                memberList[curMember.id].creditPoint -= money;
+                memberList[curMember.id].occupiedHouseId.push_back(request.occupiedHouseId);
+                curMember = memberList[curMember.id];
+                waitUntilKeyPressed("\t");
+                return;
+            }
+        }
+        
         void rateOccupiedHouse(){
             cout << "\n\tThis is all the house that you have occupied: \n";
             if (!viewAllHouseOccupied(curMember, "\t")){
@@ -403,7 +465,7 @@ class MemberMenu : public Menu{
                         return;
                     }
                     memberList[i].creditPoint += money;
-                    curMember.creditPoint += money;
+                    curMember = memberList[i];
                     break;
                 }
             }
