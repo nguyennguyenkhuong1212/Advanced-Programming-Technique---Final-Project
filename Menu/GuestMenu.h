@@ -56,13 +56,14 @@ class GuestMenu : public Menu{
             int id = memberList.size();
             Member member(id, username, password, fullName, phoneNumber);
             memberList.push_back(member);
+            waitUntilKeyPressed();
         }
 
         void viewAllHouseDetails(){
             cout << "\n";
             int i = 0;
             for (House house : houseList){
-                cout << "\t- House " << ++i << ": " << endl;
+                cout << "\t- ";
                 cout << house.toDisplayLine("\t\t") << "\n";
             }
         }

@@ -92,8 +92,7 @@ class House{
 
         string toDisplayLine(string prefix = ""){
             stringstream ss;
-            ss << "\n";
-            ss << prefix << "House ID: " << id << "\n";
+            ss << "House " << id << ": \n\n";
             ss << prefix << "Location: " << location << "\n";
             ss << prefix << "Description: " << description << "\n";
             ss << prefix << "Consuming Points: " << consumingPoints << "\n";

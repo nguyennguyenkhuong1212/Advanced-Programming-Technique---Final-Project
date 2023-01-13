@@ -17,7 +17,7 @@ void delay(int milliseconds){
 }
 
 void waitUntilKeyPressed(string prefix = ""){
-    cout << "\n" << prefix << "Press any key to continue...\n";
+    cout << "\n" << prefix << "Progress is done. Press any key to continue...\n";
     while(true){
         if (getch()) break;
     }
