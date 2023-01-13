@@ -82,7 +82,7 @@ class MemberMenu : public Menu{
             cout << "\n\tEnter location ID: ";
             readString(location);
             if (location != "1" && location != "2" && location != "3"){
-                cout << "Invalid location. Return back...\n";
+                cout << "\n\tInvalid location. Return back...\n";
                 delay(1500);
                 return;
             }
@@ -176,7 +176,7 @@ class MemberMenu : public Menu{
             cout << "Enter location ID: ";
             readString(location);
             if (location != "1" && location != "2" && location != "3"){
-                cout << "Invalid location. Return back...\n";
+                cout << "\n\tInvalid location. Return back...\n";
                 delay(1500);
                 return;
             }
@@ -248,20 +248,20 @@ class MemberMenu : public Menu{
                 delay(1500);
                 return;
             };
-            if (timeStart > res.availableTimeEnd || timeEnd < res.availableTimeStart){
+            if (timeStart < res.availableTimeStart || timeStart > res.availableTimeEnd || timeEnd < res.availableTimeStart || timeEnd > res.availableTimeEnd){
                 cout << "\n\tInvalid input. Return back...\n";
                 delay(1500);
                 return;
             }
             for (Request request: requestList){
-                if (request.isDelete) continue;
-                if (request.occupiedPersonId != curMember.id) continue;
-                if (request.isApproved && request.isOverlapped(timeStart, timeEnd)){
+                if (!request.isApproved && request.isDelete) continue;
+                if (request.occupiedHouseId != id) continue;
+                if (request.occupiedPersonId != curMember.id && request.isApproved && request.isOverlapped(timeStart, timeEnd)){
                     cout << "\n\tTime overlapped with another approved request. Return back...\n";
                     delay(1500);
                     return;
                 }
-                if (request.occupiedHouseId == id && request.occupiedPersonId == curMember.id && request.isOverlapped(timeStart, timeEnd, true)){
+                if (request.occupiedPersonId == curMember.id && request.isOverlapped(timeStart, timeEnd, true)){
                     cout << "\n\tYou have a request overlapped with this request. Your request will be automatically merged...\n";
                     timeStart = (timeStart < request.timeStart ? timeStart : request.timeStart);
                     timeEnd = (timeEnd > request.timeEnd ? timeEnd : request.timeEnd);
@@ -330,7 +330,6 @@ class MemberMenu : public Menu{
             bool found = false;
             for (Request request : requestList){
                 if (request.occupiedHouseId != houseId || request.isDelete) continue;
-                cout << request.occupiedHouseId << " " << houseId << "\n";
                 table.addRow(request.toStringArray());
                 found = true;
             }
@@ -339,7 +338,7 @@ class MemberMenu : public Menu{
                 delay(1500);
                 return;
             }
-            table.display("\t");   
+            table.display("\t\t");   
             int requestId;
             cout << "\n\tEnter the request ID that you want to approve: ";
             if (!readInt(requestId)){
@@ -352,17 +351,16 @@ class MemberMenu : public Menu{
                 if (request.isDelete) continue;
                 if (request.id == requestId) continue;
                 if (!request.isApproved) continue;
-                if (!request.occupiedPersonId == requestList[requestId].occupiedPersonId) continue;
+                if (request.occupiedPersonId != requestList[requestId].occupiedPersonId) continue;
                 if (!request.isOverlapped(requestList[requestId].timeStart, requestList[requestId].timeEnd)) continue;
-                cout << "\n\t This person already occupied a house in this period of time. This request will be deleted. Return back...\n";
+                cout << "\n\tThis person already occupied a house in this period of time. This request will be deleted. Return back...\n";
                 requestList[requestId].isDelete = true;
                 delay(1500);
                 return;
             }
             for (Request request : requestList){
                 if (request.occupiedHouseId != houseId || request.isDelete) continue;
-                cout << request.occupiedHouseId << " " << houseId << "\n";
-                if (!request.id == requestId) continue; 
+                if (request.id != requestId) continue; 
                 requestList[requestId].isApproved = true;
                 memberList[request.occupiedPersonId].requestId.push_back(request.id);
                 found = true;
@@ -373,11 +371,16 @@ class MemberMenu : public Menu{
                 delay(1500);
                 return;
             }
+            found = false;
             for (Request request : requestList){
-                if (!request.occupiedHouseId == houseId || request.isDelete || request.id == requestId) continue;
+                if (request.occupiedHouseId != houseId || request.isDelete || request.id == requestId) continue;
                 if (request.isOverlapped(requestList[requestId].timeStart, requestList[requestId].timeEnd)){
                     requestList[request.id].isDelete = true;
+                    found = true;
                 }
+            }
+            if (found) {
+                cout << "\n\tAll the ovelapped request has been deleted.\n";
             }
             waitUntilKeyPressed("\t");
         }
@@ -406,6 +409,17 @@ class MemberMenu : public Menu{
                 delay(1500);
                 return;
             };
+            for (Request request: requestList){
+                if (!request.isApproved && request.isDelete) continue;
+                if (request.id == requestId) continue;
+                if (request.occupiedPersonId == curMember.id){
+                    if (request.isOverlapped(requestList[requestId].timeStart, requestList[requestId].timeEnd)){
+                        cout << "\n\tCannot occupy more than one house in the same period. Returning back...\n";
+                        delay(1500);
+                        return;
+                    }
+                }
+            }
             found = false;
             for (Request request : requestList){
                 if (request.isDelete) continue;
@@ -539,7 +553,6 @@ class MemberMenu : public Menu{
             MemberReview review(memberReviewList.size(), comment, score, houseId, curMember.id);
             memberList[occupierId].reviewId.push_back(memberReviewList.size());
             memberReviewList.push_back(review);
-            cout << "\n";
             delay(1500);
             waitUntilKeyPressed("\t");
         }
