@@ -109,7 +109,7 @@ double calDifference(Date date1, Date date2){
 }
 
 bool checkInvalidYear(int day, int month, int year){
-    if(1000 <= year <= 3000)
+    if (1000 <= year && year <= 3000)
     {
         if((month==1 || month==3 || month==5|| month==7|| month==8||month==10||month==12) && day>0 && day<=31) return true;
         if(month==4 || month==6 || month==9|| month==11 && day>0 && day<=30) return true;
@@ -135,11 +135,13 @@ bool readDate(Date &date, string prefix = ""){
         cout << "\n" << prefix << "Invalid input. Return back...\n";
         return false;
     }
+
     cout << prefix << "Enter month: ";
     if (!readInt(month)){
         cout << "\n" << prefix << "Invalid input. Return back...\n";
         return false;
     }
+
     cout << prefix << "Enter year: ";
     if (!readInt(year)){
         cout << "\n" << prefix << "Invalid input. Return back...\n";

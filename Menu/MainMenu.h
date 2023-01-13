@@ -126,6 +126,15 @@ class MainMenu : public Menu {
                     memberReviewList = adminMenu.memberReviewList;
                     requestList = adminMenu.requestList;
                 }
+                else {
+                    cout << "\nWrong password. Return back to main menu...\n";
+                    delay(1500);
+                    return;
+                }
             } 
+            else {
+                cout << "\nCannot find this user. Return back to main menu...\n";
+                delay(1500);
+            }
         }
 };

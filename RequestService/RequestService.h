@@ -45,8 +45,8 @@ class Request {
             res.push_back(to_string(id));
             if (!special) res.push_back(to_string(occupiedPersonId));
             res.push_back(to_string(occupiedHouseId));
-            res.push_back(timeStart.toDataLine());
-            res.push_back(timeEnd.toDataLine());
+            res.push_back(timeStart.toDisplayLine());
+            res.push_back(timeEnd.toDisplayLine());
             if (!special) res.push_back((isApproved ? "Yes" : "No"));
             return res;
         }
