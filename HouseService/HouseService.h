@@ -122,7 +122,7 @@ class House{
 
 bool findHouseById(int id, vector <House> houseList, House& res){
     for(House house: houseList){
-        if (house.id == id){
+if (house.id == id && house.isListed){
             res = house;
             return true;
         }

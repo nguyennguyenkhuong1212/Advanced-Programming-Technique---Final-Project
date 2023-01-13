@@ -56,10 +56,7 @@ class MemberMenu : public Menu{
                 return;
             }
             cout << "\n\tThis is your listed house:\n";
-            if (!viewAllHouseListed(curMember, "\t")) {
-                waitUntilKeyPressed("\t");
-                return;
-            }
+            viewAllHouseListed(curMember, "\t");
             waitUntilKeyPressed("\t");
         }
 
@@ -75,35 +72,55 @@ class MemberMenu : public Menu{
             Date availableTimeEnd;
             int consumingPoints;
             double minimumRating;
-            
-            cout << "Enter location: ";
+            vector <string> tempLabels = {"ID", "Location"};
+            TableFormatter table2(tempLabels);
+            table2.addRow({"1", "Ho Chi Minh City"});
+            table2.addRow({"2", "Hue"});
+            table2.addRow({"3", "Ha Noi"});
+            cout << "\n";
+            table2.display("\t");
+            cout << "\n\tEnter location ID: ";
             readString(location);
-            cout << "Enter description: ";
+            if (location != "1" && location != "2" && location != "3"){
+                cout << "Invalid location. Return back...\n";
+                delay(1500);
+                return;
+            }
+            if (location == "1") location = "Ho Chi Minh City";
+            if (location == "2") location = "Hue";
+            if (location == "3") location = "Ha Noi";
+            cout << "\tEnter description: ";
             readString(description);
-            cout << "Available from: \n";
+            cout << "\tAvailable from: \n";
             if (!readDate(availableTimeStart, "\t")){
                 delay(1500);
                 return;
             };
-            cout << "Available until: \n";
+            cout << "\tAvailable until: \n";
             if (!readDate(availableTimeEnd, "\t")){
                 delay(1500);
                 return;
             };
-            cout << "Enter consuming points per hour to occupy: ";
+            cout << "\tEnter consuming points per hour to occupy: ";
             if (!readInt(consumingPoints)){
                 cout << "\n\tInvalid consuming points. Return back...\n";
                 delay(1500);
                 return;
             };
-            cout << "Enter minimum rating required: ";
+            cout << "\tEnter minimum rating required: ";
             cin >> minimumRating;
+            if (minimumRating > 10 || minimumRating < -10) {
+                cout << "\n\tInvalid minimum rating. Return back...\n";
+                delay(1500);
+                return;
+            }
 
             int id = houseList.size();
             House tempHouse(id, location, description, availableTimeStart, availableTimeEnd, consumingPoints, minimumRating);
             for (int i = 0; i < memberList.size(); i++) {
                 if (memberList[i].id == curMember.id){
                     memberList[i].listedHouseId = id;
+                    curMember = memberList[curMember.id];
                     break;
                 }
             }
@@ -118,10 +135,7 @@ class MemberMenu : public Menu{
                 return;
             }
             cout << "\n\tThis is your listed house:\n";
-            if (!viewAllHouseListed(curMember, "\t")) {
-                waitUntilKeyPressed("\t");
-                return;
-            }
+            viewAllHouseListed(curMember, "\t");
             cout << "\n\tEnter a house's ID to unlist it: ";
             int houseId;
             if (!readInt(houseId) || houseId != curMember.listedHouseId){
@@ -191,7 +205,7 @@ class MemberMenu : public Menu{
             TableFormatter table(labels);
             bool found = false;
             for (House house: houseList){
-                if (house.consumingPoints <= curMember.creditPoint && house.id != curMember.listedHouseId && getScore(curMember) >= house.minimumRating){
+                if (house.isListed && house.consumingPoints <= curMember.creditPoint && house.id != curMember.listedHouseId && getScore(curMember) >= house.minimumRating){
                     table.addRow(house.toStringArray());
                     found = true;
                 }
@@ -283,7 +297,7 @@ class MemberMenu : public Menu{
             TableFormatter table(labels);
             bool found = false;
             for (Request request : requestList){
-                if (!request.occupiedHouseId == houseId || request.isDelete) continue;
+                if (request.occupiedHouseId != houseId || request.isDelete) continue;
                 table.addRow(request.toStringArray());
                 found = true;
             }
@@ -303,7 +317,7 @@ class MemberMenu : public Menu{
                 delay(1500);
                 return;
             }
-            viewAllHouse(curMember, "\t\t"); 
+            viewAllHouseListed(curMember, "\t\t"); 
             cout << "\n\tEnter a house's ID to view all the requests: ";
             int houseId;
             if (!readInt(houseId) || houseId != curMember.listedHouseId){
@@ -315,7 +329,8 @@ class MemberMenu : public Menu{
             TableFormatter table(labels);
             bool found = false;
             for (Request request : requestList){
-                if (!request.occupiedHouseId == houseId || request.isDelete) continue;
+                if (request.occupiedHouseId != houseId || request.isDelete) continue;
+                cout << request.occupiedHouseId << " " << houseId << "\n";
                 table.addRow(request.toStringArray());
                 found = true;
             }
@@ -345,7 +360,8 @@ class MemberMenu : public Menu{
                 return;
             }
             for (Request request : requestList){
-                if (!request.occupiedHouseId == houseId || request.isDelete) continue;
+                if (request.occupiedHouseId != houseId || request.isDelete) continue;
+                cout << request.occupiedHouseId << " " << houseId << "\n";
                 if (!request.id == requestId) continue; 
                 requestList[requestId].isApproved = true;
                 memberList[request.occupiedPersonId].requestId.push_back(request.id);
@@ -413,13 +429,17 @@ class MemberMenu : public Menu{
                     else {
                         cout << "\n\tThis request will be deleted. Returning back...\n";
                         requestList[request.id].isDelete = true;
-                        delay(1500);
+                        delay(1500); 
                         return;
                     }
                 }
                 memberList[curMember.id].creditPoint -= money;
                 memberList[curMember.id].occupiedHouseId.push_back(request.occupiedHouseId);
                 curMember = memberList[curMember.id];
+                if (find(houseList[request.occupiedHouseId].occupierId.begin(), houseList[request.occupiedHouseId].occupierId.end(), request.occupiedPersonId) == houseList[request.occupiedHouseId].occupierId.end())
+                houseList[request.occupiedHouseId].occupierId.push_back(request.occupiedPersonId);
+                cout << "\n\tThis request will be deleted.\n";
+                requestList[request.id].isDelete = true;
                 waitUntilKeyPressed("\t");
                 return;
             }
@@ -440,7 +460,7 @@ class MemberMenu : public Menu{
             };
             int score;
             cout << "\n\tEnter score: ";
-            if (!readInt(score) || score > 10 || score < 1){
+            if (!readInt(score) || score > 10 || score < -10){
                 cout << "\n\tInvalid score. Return back...\n";
                 delay(1500);
                 return;
@@ -508,7 +528,7 @@ class MemberMenu : public Menu{
             };
             cout << "\tEnter the score for this occupier: ";
             int score;
-            if (!readInt(score)){
+            if (!readInt(score) || score > 10 || score < -10){
                 cout << "\n\tInvalid score. Return back...\n";
                 delay(1500);
                 return;
@@ -548,16 +568,13 @@ class MemberMenu : public Menu{
                 return;
             }
             cout << "\n\tThis is your listed house:\n";
-            if (!viewAllHouseListed(curMember, "\t")) {
-                waitUntilKeyPressed("\t");
-                return;
-            }
+            viewAllHouseListed(curMember, "\t");
             if (houseList[curMember.listedHouseId].reviewId.size() == 0){
                 cout << "\n\tThere is no reviews about your listed house. Returning back...\n";
                 delay(1500);
                 return;
             }
-            cout << "\n\tEnter a house's ID to unlist it: ";
+            cout << "\n\tEnter a house's ID to view all reviews about it: ";
             int houseId;
             if (!readInt(houseId) || houseId != curMember.listedHouseId){
                 cout << "\n\tInvalid house ID. Return back...\n";
@@ -565,12 +582,13 @@ class MemberMenu : public Menu{
                 return;
             };
             vector <string> labels = {"ID", "Comment", "Score", "Occupier"};
+            vector <string> row;
             TableFormatter table(labels);
             for (House house: houseList){
                 if (!house.isListed) continue;
                 if (house.id == houseId){
                     for (int reviewID : house.reviewId){
-                        vector <string> row = houseReviewList[reviewID].toStringArray();
+                        row = houseReviewList[reviewID].toStringArray();
                         row.push_back(memberList[houseReviewList[reviewID].occupiedPersonId].fullName);
                         table.addRow(row);
                     }

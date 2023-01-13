@@ -119,7 +119,7 @@ class Menu{
             table.display("\t");
         }
 
-        bool viewAllHouseListed(Member member, string prefix = ""){ // Use only for members
+        void viewAllHouseListed(Member member, string prefix = ""){ // Use only for members
             vector <string> labels = {"ID", "Location", "Description", "Available Time Start", "Available Time End", "Consuming Points (per hour)", "Minimum Score Required"};
             TableFormatter table(labels);
             House res;
@@ -129,7 +129,6 @@ class Menu{
                 }
             }
             table.display(prefix);
-            return true;
         }
 
         bool viewAllHouseOccupied(Member member, string prefix = ""){ // Use only for members
