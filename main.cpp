@@ -17,10 +17,6 @@
 #include "DateService/Date.h"
 using namespace std;
 
-void hello(){
-    cout << "Hello World!" << endl;
-}
-
 int main(){
 
     MainMenu menu;
